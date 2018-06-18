@@ -1,0 +1,4 @@
+module.exports = {
+    BAD_DB_ERROR: 'ER_BAD_DB_ERROR',
+    INCORRECT_CRED: "ER_INCORRECT_CREDENTIALS"
+};
