@@ -5,7 +5,7 @@ const GAME_ADDED = 'Game added: ';
 module.exports = class Game {
     constructor() {
         this.Table = GameModel;
-        this.Table.sync();
+        this.Table.sync({force: false});
     }
 
     async addGame(req, res) {
@@ -27,12 +27,12 @@ module.exports = class Game {
     async removeGameByTitle(req, res) {
         try {
             //const game = await this.Table.create({title: req.body.title});
-            await game.destroy({
+            const destroyed = await this.Table.destroy({
                 where: {
                     title: req.body.title
                 }
             });
-            res.status(200).json(JSON.stringify(game));
+            res.status(200).json(JSON.stringify(destroyed));
         } catch (err) {
             res.status(400).json({error: err.code});
             console.log(err);

@@ -8,7 +8,7 @@ const USER_ADDED = 'User added: ';
 module.exports = class User {
     constructor() {
         this.Table = UserModel;
-        this.Table.sync();
+        this.Table.sync({force: false});
     }
 
     async addUser(req, res) {
