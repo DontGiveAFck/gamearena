@@ -52,7 +52,7 @@ module.exports = class User {
         try {
             const users = await this.Table.findAll();
             res.status(200).json(JSON.stringify(users));
-        } catch(err) {
+        } catch (err) {
             res.status(400).json(JSON.stringify({error: err.code}));
             console.log(err);
         }
@@ -67,7 +67,7 @@ module.exports = class User {
                 }
             });
             res.status(200).json(JSON.stringify(user));
-        } catch(err) {
+        } catch (err) {
             res.status(400).json(JSON.stringify({error: err.code}));
             console.log(err);
         }
@@ -83,7 +83,11 @@ module.exports = class User {
             });
             let passwordFromDb = user.get('password');
             const match = await bcrypt.compare(data.password, passwordFromDb);
-            if(match) {
+            if (match) {
+                let payload = {
+                    id: user.get('id'),
+                    login: user.get('login')
+                };
                 const token = jwt.sign(payload, config.jwtOptions.secretOrKey);
                 res.cookie('token', token);
                 res.status(200).json({token: token})
@@ -91,9 +95,9 @@ module.exports = class User {
             } else {
                 throw new Error().code = errors.INCORRECT_CRED;
             }
-        } catch(err) {
-                res.status(400).json(JSON.stringify({error: err.code}));
+        } catch (err) {
+            res.status(400).json(JSON.stringify({error: err.code}));
             console.log(err);
         }
     }
-};
+}

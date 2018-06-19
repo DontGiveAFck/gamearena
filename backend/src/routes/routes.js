@@ -12,24 +12,33 @@ router.get('/users', (req, res) => {
         userHandler.getUserByLogin(req, res);
 });
 
-router.put('/users', (req, res) => {
+router.put('/users', passport.authenticate('jwt', { session: false,
+    successRedirect: 'http://localhost:3000/users' }), (req, res) => {
     userHandler.addUser(req, res);
 });
 
-router.delete('/users', (req, res) => {
+router.post('/users', passport.authenticate('jwt', { session: false,
+    successRedirect: 'http://localhost:3000/users' }), (req, res) => {
+    userHandler.signIn(req, res);
+});
+
+router.delete('/users', passport.authenticate('jwt', { session: false,
+    successRedirect: 'http://localhost:3000/users' }), (req, res) => {
     userHandler.removeUserByLogin(req, res);
 });
 
 router.get('/games', passport.authenticate('jwt', { session: false,
-    failureRedirect: 'http://localhost:3000/login' }), (req, res) => {
+    failureRedirect: 'http://localhost:3000/users' }), (req, res) => {
     req.query.title == undefined ?
         gameHandler.getGames(req, res) :
-        gameHandler.getGameByLogin(req, res);
+        gameHandler.getGameByTitle(req, res);
 });
-router.put('/games', (req, res) => {
+router.put('/games', passport.authenticate('jwt', { session: false,
+    failureRedirect: 'http://localhost:3000/users' }), (req, res) => {
     gameHandler.addGame(req, res);
 });
-router.delete('/games', (req, res) => {
+router.delete('/games', passport.authenticate('jwt', { session: false,
+    failureRedirect: 'http://localhost:3000/users' }), (req, res) => {
     gameHandler.removeGameByTitle(req, res);
 });
 

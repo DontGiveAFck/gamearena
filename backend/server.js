@@ -4,6 +4,7 @@ const passport = require('passport');
 const routes = require('./src/routes/routes');
 const bodyParser = require('body-parser');
 const app = express();
+require('./src/auth/passport')
 const port = 3000;
 
 

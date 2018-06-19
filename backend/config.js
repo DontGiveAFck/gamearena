@@ -1,7 +1,7 @@
 module.exports = {
     database: 'gamearena',
-    username: 'user',
-    password: 'pass',
+    username: 'root',
+    password: '12345',
     host: 'localhost',
     dialect: 'mysql',
     port: 3306

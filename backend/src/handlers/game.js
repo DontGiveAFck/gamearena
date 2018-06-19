@@ -8,7 +8,7 @@ module.exports = class Game {
         this.Table.sync({force: false});
     }
 
-    async addGame(req, res) {
+    async addGame(req   , res) {
         let data = req.body;
         let game = this.Table.build({
             title: data.title,
