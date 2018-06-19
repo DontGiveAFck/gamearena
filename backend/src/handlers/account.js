@@ -1,4 +1,4 @@
-const AccountModel = require('./models/Account');
+const AccountModel = require('../db/models/Account');
 
 module.exports = class Account {
     constructor() {

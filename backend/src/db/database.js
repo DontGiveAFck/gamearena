@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
-const dbconfig = require('../config');
-const errors = require('./errors');
+const dbconfig = require('../../config');
+const errors = require('../errors');
 
 const CONNECTION_ESTABLISHED = 'Connection established';
 const CREATE_DATABASE = 'CREATE DATABASE gamearena';

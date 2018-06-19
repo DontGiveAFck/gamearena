@@ -1,4 +1,4 @@
-const GameModel = require('./models/Game');
+const GameModel = require('../db/models/Game');
 
 const GAME_ADDED = 'Game added: ';
 

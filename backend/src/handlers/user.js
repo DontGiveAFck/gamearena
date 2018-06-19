@@ -1,9 +1,10 @@
-const UserModel = require('./models/User');
+const UserModel = require('../db/models/User');
 const bcrypt = require('bcrypt');
-const errors = require('./errors');
-
+const errors = require('../errors');
+const jwt = require('jsonwebtoken');
 const SALT_ROUNDS = 10;
 const USER_ADDED = 'User added: ';
+const config = require('../auth/config');
 
 module.exports = class User {
     constructor() {
@@ -83,7 +84,10 @@ module.exports = class User {
             let passwordFromDb = user.get('password');
             const match = await bcrypt.compare(data.password, passwordFromDb);
             if(match) {
-                res.status(200).json(JSON.stringify(users));
+                const token = jwt.sign(payload, config.jwtOptions.secretOrKey);
+                res.cookie('token', token);
+                res.status(200).json({token: token})
+                //res.status(200).json(JSON.stringify(users));
             } else {
                 throw new Error().code = errors.INCORRECT_CRED;
             }

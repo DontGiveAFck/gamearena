@@ -1,0 +1,12 @@
+/backend/node_modules
+.idea/
+**/*.DS_Store
+### Node template
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Environment variables
+/backend/.env
+
