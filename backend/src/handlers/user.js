@@ -96,7 +96,7 @@ module.exports = class User {
                 throw new Error().code = errors.INCORRECT_CRED;
             }
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err.code}));
+            res.status(400).json(JSON.stringify({error: err}));
             console.log(err);
         }
     }

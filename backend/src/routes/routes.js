@@ -12,13 +12,11 @@ router.get('/users', (req, res) => {
         userHandler.getUserByLogin(req, res);
 });
 
-router.put('/users', passport.authenticate('jwt', { session: false,
-    successRedirect: 'http://localhost:3000/users' }), (req, res) => {
+router.put('/users', (req, res) => {
     userHandler.addUser(req, res);
 });
 
-router.post('/users', passport.authenticate('jwt', { session: false,
-    successRedirect: 'http://localhost:3000/users' }), (req, res) => {
+router.post('/users', (req, res) => {
     userHandler.signIn(req, res);
 });
 
