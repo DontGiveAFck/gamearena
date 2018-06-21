@@ -43,7 +43,6 @@ module.exports = class User {
     async removeUserByLogin(req, res) {
         let login = req.body.login;
         try {
-            //const user = await this.Table.create({login: login});
             const destroyed = await this.Table.destroy({
                 where: {
                     login: login
