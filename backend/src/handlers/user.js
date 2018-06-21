@@ -1,4 +1,5 @@
 const UserModel = require('../db/models/User');
+const AccountModel = require('../db/models/Account');
 const bcrypt = require('bcrypt');
 const errors = require('../errors');
 const jwt = require('jsonwebtoken');
@@ -9,6 +10,7 @@ const config = require('../auth/config');
 module.exports = class User {
     constructor() {
         this.Table = UserModel;
+        this.TableAccount = AccountModel;
         this.Table.sync({force: false});
     }
 
@@ -25,6 +27,12 @@ module.exports = class User {
             });
             const user = await creds.save();
             console.log(USER_ADDED, user);
+            let userAccount = this.TableAccount.build({
+                login: data.login,
+                balance: 0
+            });
+            const account = await userAccount.save();
+            console.log(account);
             res.status(200).json(JSON.stringify(user));
         } catch (err) {
             res.status(400).json(JSON.stringify({error: err.code}));

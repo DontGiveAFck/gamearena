@@ -6,17 +6,34 @@ module.exports = class Account {
         this.Table.sync();
     }
 
-    async setBalance(login, newBalance) {
+    async setBalance(req, res) {
         try {
-            await this.Table.update({
+            let newBalance = req.body.newbalance;
+            let login = req.body.login;
+            const account = await this.Table.update({
                 balance: newBalance,
             }, {
                 where: {
                     login: login
                 }
             });
+            res.status(200).json(account);
         } catch (err) {
+            res.status(400).json(JSON.stringify({error: err.code}));
             console.log(err);
+        }
+    }
+
+    async getPlayers(req, res) {
+        try {
+            let limit = +req.query.limit;
+            const users = await this.Table.findAll({
+                order: [['balance', 'DESC']],
+                limit: limit
+            });
+            res.status(200).json(users);
+        } catch (err) {
+            res.status(400).json(JSON.stringify({error: err.code}));
         }
     }
 };

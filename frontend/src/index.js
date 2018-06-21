@@ -65,6 +65,7 @@ class LoginForm extends React.Component {
             valueLogin: evt.target.value
         });
         console.log(this.state);
+        console.log
 
     }
 }
@@ -83,6 +84,11 @@ class Page extends React.Component {
         };
     }
     render() {
+
+        if(this.state.isLogged == false) {
+
+        }
+
         return (
             <div id='page'>
 
@@ -90,6 +96,9 @@ class Page extends React.Component {
         );
     }
 }
+
+
+
 
 ReactDOM.render(<LoginForm/>, document.getElementById('root'));
 
