@@ -56,8 +56,11 @@ module.exports = class User {
     }
 
     async getUsers(req, res) {
+        const limit = req.query.limit || 10;
         try {
-            const users = await this.Table.findAll();
+            const users = await this.Table.findAll({
+                limit: limit
+            });
             res.status(200).json(JSON.stringify(users));
         } catch (err) {
             res.status(400).json(JSON.stringify({error: err.code}));

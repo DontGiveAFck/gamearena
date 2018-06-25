@@ -13,5 +13,13 @@ module.exports = sequelize.define('games', {
     description: {
         type: Sequelize.STRING,
         allowNull: true
+    },
+    type: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        references: {
+            model: 'GameType',
+            key: 'gametype'
+        }
     }
 });

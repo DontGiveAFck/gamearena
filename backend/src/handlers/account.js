@@ -26,7 +26,7 @@ module.exports = class Account {
 
     async getPlayers(req, res) {
         try {
-            let limit = +req.query.limit;
+            let limit = parseInt(req.query.limit);
             const users = await this.Table.findAll({
                 order: [['balance', 'DESC']],
                 limit: limit
@@ -36,4 +36,6 @@ module.exports = class Account {
             res.status(400).json(JSON.stringify({error: err.code}));
         }
     }
+
+
 };

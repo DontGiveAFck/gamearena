@@ -19,6 +19,7 @@ var strategy = new JwtStrategy(config.jwtOptions, function (jwt_payload, next) {
 
 passport.use(strategy);
 
+
 /*passport.use(new LocalStrategy(
     function(username, password, done) {
         User.findOne({ username: username }, function(err, user) {
