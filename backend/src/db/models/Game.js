@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../database');
+const GameType = require('./GameType')
 
 module.exports = sequelize.define('games', {
     title: {
@@ -14,12 +15,16 @@ module.exports = sequelize.define('games', {
         type: Sequelize.STRING,
         allowNull: true
     },
-    type: {
+    gametype: {
         type: Sequelize.STRING,
         allowNull: false,
         references: {
-            model: 'GameType',
+            model: GameType,
             key: 'gametype'
         }
+    },
+    status: {
+        type: Sequelize.STRING,
+        defaultValue: 'active' // removed, blocked
     }
 });

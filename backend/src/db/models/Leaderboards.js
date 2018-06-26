@@ -1,14 +1,28 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../database');
+const Sequelize = require('sequelize')
+const sequelize = require('../database')
+const GameModel = require('../models/Game')
+const AccountModel = require('../models/Account')
 
 module.exports = sequelize.define('leaderboards', {
-    type: {
-        type: Sequelize.STRING,
-        unique: true,
+    gameId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        validate: {
-            len: [1,50]
-        },
-        primaryKey: true
+        references: {
+            model: GameModel,
+            key: 'id'
+        }
+    },
+    accountId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+            model: AccountModel,
+            key: 'id'
+        }
+    },
+    score: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+        allowNull: false
     }
-});
+})

@@ -41,14 +41,17 @@ module.exports = class User {
     }
 
     async removeUserByLogin(req, res) {
-        let login = req.body.login;
+        let login = req.body.login
         try {
-            const destroyed = await this.Table.destroy({
+            const removed = await this.Table.update({
+                status: 'removed'
+            }, {
                 where: {
                     login: login
                 }
-            });
-            res.status(200).json(JSON.stringify(destroyed));
+            })
+
+            res.status(200).json(JSON.stringify(removed))
         } catch (err) {
             res.status(400).json(JSON.stringify({error: err.code}));
             console.log(err);
@@ -68,17 +71,15 @@ module.exports = class User {
         }
     }
 
-    async getUserByLogin(req, res) {
-        let login = req.query.login;
+    async getUserById(id, cb) {
         try {
             const user = await this.Table.findOne({
                 where: {
-                    login: login
+                    id: id
                 }
             });
-            res.status(200).json(JSON.stringify(user));
+            cb(null, user);
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err.code}));
             console.log(err);
         }
     }
@@ -96,7 +97,7 @@ module.exports = class User {
             if (match) {
                 let payload = {
                     id: user.get('id'),
-                    login: user.get('login')
+                    admin: user.get('admin')
                 };
                 const token = jwt.sign(payload, config.jwtOptions.secretOrKey);
                 res.cookie('token', token);

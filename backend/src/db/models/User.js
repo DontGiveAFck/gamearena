@@ -30,5 +30,19 @@ module.exports = sequelize.define('users', {
         validate: {
             len: [5,20]
         }
+    },
+    admin: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: 0,
+    },
+    avatar: {
+        type: Sequelize.BLOB,
+        allowNull: true
+    },
+    status: {
+        type: Sequelize.STRING,
+        defaultValue: 'active', // removed, blocked
+        allowNull: false
     }
+
 });

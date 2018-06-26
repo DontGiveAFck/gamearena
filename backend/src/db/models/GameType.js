@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('../database');
 
 module.exports = sequelize.define('gametypes', {
-    type: {
+    gametype: {
         type: Sequelize.STRING,
         unique: true,
         allowNull: false,

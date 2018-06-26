@@ -1,36 +1,37 @@
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
 const passportJWT = require("passport-jwt")
 const JwtStrategy = passportJWT.Strategy
 const config = require('./config');
+const User = require('../handlers/user')
+const userHandler = new User()
 
-var strategy = new JwtStrategy(config.jwtOptions, function (jwt_payload, next) {
-    User.findOne({ id: jwt_payload.id }, function (err, user) {
+const strategyForUser = new JwtStrategy(config.jwtOptions, function (jwt_payload, next) {
+    userHandler.getUserById(jwt_payload.id, function (err, user) {
         if (err) {
             return next(err)
         }
         if (!user) {
             return next(null, false, { error: "No user found." })
         }
+        console.log(user);
         next(null, user)
-
     })
 });
 
-passport.use(strategy);
+const strategyForAdmin = new JwtStrategy(config.jwtOptions, function (jwt_payload, next) {
+    userHandler.getUserById(jwt_payload.id, function (err, user) {
+        if (err) {
+            return next(err)
+        }
+        if (!user) {
+            return next(null, false, { error: "No user found." })
+        }
+        if (!user.admin) {
+            return next(null, false, { error: "Not allowed" })
+        }
+        next(null, user)
+    })
+});
 
-
-/*passport.use(new LocalStrategy(
-    function(username, password, done) {
-        User.findOne({ username: username }, function(err, user) {
-            if (err) { return done(err); }
-            if (!user) {
-                return done(null, false, { message: 'Incorrect username.' });
-            }
-            if (!user.validPassword(password)) {
-                return done(null, false, { message: 'Incorrect password.' });
-            }
-            return done(null, user);
-        });
-    }
-));*/
+passport.use('jwt.user',strategyForUser);
+passport.use('jwt.admin', strategyForAdmin);

@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-const dbconfig = require('../../config');
 const errors = require('../errors');
 
 const CONNECTION_ESTABLISHED = 'Connection established';
@@ -8,9 +7,9 @@ const ERR_CONNECTION = 'Something wrong with DB connection:';
 
 let sequelize;
 
-sequelize = new Sequelize(dbconfig.database, dbconfig.username, dbconfig.password, {
-    host: dbconfig.host,
-    dialect: dbconfig.dialect,
+sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
     operatorsAliases: false,
     pool: {
         max: 5,

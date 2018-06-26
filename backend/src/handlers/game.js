@@ -15,7 +15,8 @@ module.exports = class Game {
         let data = req.body;
         let game = this.gameTable.build({
             title: data.title,
-            description: data.description
+            description: data.description,
+            type: data.type
         });
         try {
             const user = await game.save();
@@ -29,13 +30,15 @@ module.exports = class Game {
 
     async removeGameByTitle(req, res) {
         try {
-            //const game = await this.Table.create({title: req.body.title});
-            const destroyed = await this.gameTable.destroy({
+            const removed = await this.gameTable.update({
+                status: 'removed'
+            }, {
                 where: {
                     title: req.body.title
                 }
-            });
-            res.status(200).json(JSON.stringify(destroyed));
+            })
+
+            res.status(200).json(JSON.stringify(removed));
         } catch (err) {
             res.status(400).json({error: err.code});
             console.log(err);
@@ -70,15 +73,15 @@ module.exports = class Game {
     }
 
     async addGameType(req, res) {
+        let gametype = req.body.gametype;
+        let buildGametype = this.gametypeTable.build({
+            gametype: gametype
+        });
         try {
-            const gametype = req.body.gametype
-            await this.gametypeTable.findAll({
-                where: {
-                    type: gametype
-                }
-            });
-            res.status(200).json(JSON.stringify(gametype));
-        } catch(err) {
+            const addedGametype = await buildGametype.save();
+            console.log(GAME_ADDED, addedGametype);
+            res.status(200).json(JSON.stringify(addedGametype));
+        } catch (err) {
             res.status(400).json({error: err.code});
             console.log(err);
         }

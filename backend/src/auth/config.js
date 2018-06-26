@@ -1,6 +1,6 @@
 const passportJWT = require("passport-jwt")
 const ExtractJwt = passportJWT.ExtractJwt
-const jwt = 'secretsecret'
+const jwt = process.env.JWT_SECRET
 
 const jwtOptions = {}
 
