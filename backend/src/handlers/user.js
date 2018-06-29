@@ -1,17 +1,19 @@
-const UserModel = require('../db/models/User');
-const AccountModel = require('../db/models/Account');
+const db = require('../db/database')
 const bcrypt = require('bcrypt');
 const errors = require('../errors');
 const jwt = require('jsonwebtoken');
+const path = require('path')
+const util = require('util')
 const SALT_ROUNDS = 10;
 const USER_ADDED = 'User added: ';
 const config = require('../auth/config');
+const mainDir = process.cwd()
 
 module.exports = class User {
     constructor() {
-        this.Table = UserModel;
-        this.TableAccount = AccountModel;
-        this.Table.sync({force: false});
+        this.userTable = db.users
+        this.TableAccount = db.accounts
+        this.userTable.sync({force: false});
     }
 
     async addUser(req, res) {
@@ -19,7 +21,7 @@ module.exports = class User {
             let data = req.body;
             console.log(data.password);
             const encryptedPassword = await bcrypt.hash(data.password, SALT_ROUNDS);
-            let creds = this.Table.build({
+            let creds = this.userTable.build({
                 login: data.login,
                 password: encryptedPassword,
                 email: data.email,
@@ -29,13 +31,14 @@ module.exports = class User {
             console.log(USER_ADDED, user);
             let userAccount = this.TableAccount.build({
                 login: data.login,
-                balance: 0
+                balance: 0,
+                userId: user.id
             });
             const account = await userAccount.save();
             console.log(account);
             res.status(200).json(JSON.stringify(user));
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err.code}));
+            res.status(400).json(JSON.stringify({'error': err.code}));
             console.log(err);
         }
     }
@@ -43,7 +46,7 @@ module.exports = class User {
     async removeUserByLogin(req, res) {
         let login = req.body.login
         try {
-            const removed = await this.Table.update({
+            const removed = await this.userTable.update({
                 status: 'removed'
             }, {
                 where: {
@@ -53,7 +56,7 @@ module.exports = class User {
 
             res.status(200).json(JSON.stringify(removed))
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err.code}));
+            res.status(400).json(JSON.stringify({'error': err.code}));
             console.log(err);
         }
     }
@@ -61,19 +64,19 @@ module.exports = class User {
     async getUsers(req, res) {
         const limit = req.query.limit || 10;
         try {
-            const users = await this.Table.findAll({
+            const users = await this.userTable.findAll({
                 limit: limit
             });
             res.status(200).json(JSON.stringify(users));
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err.code}));
+            res.status(400).json(JSON.stringify({'error': err.code}));
             console.log(err);
         }
     }
 
     async getUserById(id, cb) {
         try {
-            const user = await this.Table.findOne({
+            const user = await this.userTable.findOne({
                 where: {
                     id: id
                 }
@@ -87,7 +90,7 @@ module.exports = class User {
     async signIn(req, res) {
         let data = req.body;
         try {
-            const user = await this.Table.findOne({
+            const user = await this.userTable.findOne({
                 where: {
                     login: data.login
                 }
@@ -107,8 +110,52 @@ module.exports = class User {
                 throw new Error().code = errors.INCORRECT_CRED;
             }
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err}));
+            res.status(400).json(JSON.stringify({'error': err.code}));
             console.log(err);
+        }
+    }
+
+    async makeAdmin(req, res) {
+        try {
+            const userId = req.body.id;
+            const newAdmin = await this.userTable.update({
+                admin: 1
+            }, {
+                where: {
+                    id: userId
+                }
+            })
+            res.status(200).json(JSON.stringify(newAdmin))
+        } catch (err) {
+            res.status(400).json(JSON.stringify({'error': err.code}));
+            console.log(err);
+        }
+    }
+
+    async addAvatar(req, res) {
+        if (!req.files) {
+            return res.status(400).send(JSON.stringify({error: 'No file'}))
+        }
+
+        try {
+            const avatar = req.files.avatar
+            const token = req.cookies.token
+            const decoded = jwt.decode(token, {complete: true})
+            const avatarPath = mainDir + '/pictures/users/avatars/user' + decoded.payload.id + '.jpg'
+
+            await avatar.mv(avatarPath)
+
+            await this.userTable.update({
+                avatar: avatarPath
+            }, {
+                where: {
+                    id: decoded.payload.id
+                }
+            })
+            res.status(200).json({'result' : 'success'})
+        } catch (err) {
+            return res.status(500).json(err)
+
         }
     }
 }

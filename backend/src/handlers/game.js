@@ -1,12 +1,11 @@
-const GameModel = require('../db/models/Game');
-const GametypeModel = require('../db/models/GameType')
+const db = require('../db/database')
 
 const GAME_ADDED = 'Game added: ';
 
 module.exports = class Game {
     constructor() {
-        this.gameTable = GameModel;
-        this.gametypeTable = GametypeModel;
+        this.gameTable = db.games
+        this.gametypeTable = db.gametypes
         this.gameTable.sync({force: false});
         this.gametypeTable.sync({force: false});
     }
@@ -61,8 +60,10 @@ module.exports = class Game {
 
     async getGames(req, res) {
         try {
+            const offset = req.query.offset || 0
             const limit = req.query.limit || 10
             const games = await this.gameTable.findAll({
+                offset: offset,
                 limit: limit
             });
             res.status(200).json(JSON.stringify(games));
@@ -73,9 +74,9 @@ module.exports = class Game {
     }
 
     async addGameType(req, res) {
-        let gametype = req.body.gametype;
+        let gametype = req.body.type;
         let buildGametype = this.gametypeTable.build({
-            gametype: gametype
+            type: gametype
         });
         try {
             const addedGametype = await buildGametype.save();
