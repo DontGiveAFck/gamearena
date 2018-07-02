@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('gametypes', {
+    return queryInterface.createTable('gametype', {
         type: {
             type: Sequelize.STRING,
             unique: true,
@@ -22,6 +22,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Gametypes');
+    return queryInterface.dropTable('gametype');
   }
 };

@@ -1,60 +1,56 @@
 const db = require('../db/database')
-
 const GAME_ADDED = 'Game added: ';
+
+const successObject = {
+    "result": "successful"
+}
 
 module.exports = class Game {
     constructor() {
-        this.gameTable = db.games
-        this.gametypeTable = db.gametypes
-        this.gameTable.sync({force: false});
-        this.gametypeTable.sync({force: false});
+        db.game.sync({force: false});
+        db.gametype.sync({force: false});
     }
 
     async addGame(req   , res) {
         let data = req.body;
-        let game = this.gameTable.build({
+        let game = db.game.build({
             title: data.title,
             description: data.description,
             type: data.type
         });
         try {
             const user = await game.save();
-            console.log(GAME_ADDED, game);
-            res.status(200).json(JSON.stringify(user));
+            res.status(200).json(successObject);
         } catch (err) {
-            res.status(400).json({error: err.code});
-            console.log(err);
+            res.status(400).json(err);
         }
     }
 
     async removeGameByTitle(req, res) {
         try {
-            const removed = await this.gameTable.update({
+            await db.game.update({
                 status: 'removed'
             }, {
                 where: {
                     title: req.body.title
                 }
             })
-
-            res.status(200).json(JSON.stringify(removed));
+            res.status(200).json(successObject);
         } catch (err) {
-            res.status(400).json({error: err.code});
-            console.log(err);
+            res.status(400).json(err);
         }
     }
 
     async getGameByTitle(req, res) {
         try {
-            const game = await this.gameTable.findOne({
+            const game = await db.game.findOne({
                 where: {
                     title: req.query.title
                 }
             });
-            res.status(200).json(JSON.stringify(game));
+            res.status(200).json(game);
         } catch(err) {
-            res.status(400).json({error: err.code});
-            console.log(err);
+            res.status(400).json(err);
         }
     }
 
@@ -62,41 +58,40 @@ module.exports = class Game {
         try {
             const offset = req.query.offset || 0
             const limit = req.query.limit || 10
-            const games = await this.gameTable.findAll({
+            const games = await db.game.findAll({
                 offset: offset,
                 limit: limit
             });
-            res.status(200).json(JSON.stringify(games));
+            res.status(200).json(games);
         } catch(err) {
-            res.status(400).json({error: err.code});
-            console.log(err);
+            res.status(400).json(err);
         }
     }
 
     async addGameType(req, res) {
         let gametype = req.body.type;
-        let buildGametype = this.gametypeTable.build({
+        let buildGametype = db.gametype.build({
             type: gametype
         });
         try {
-            const addedGametype = await buildGametype.save();
-            console.log(GAME_ADDED, addedGametype);
-            res.status(200).json(JSON.stringify(addedGametype));
+            await buildGametype.save();
+            res.status(200).json(successObject);
         } catch (err) {
-            res.status(400).json({error: err.code});
-            console.log(err);
+            res.status(400).json(err);
         }
     }
 
     async getGameTypes(req, res) {
         try {
+            const offset = req.query.offset || 0
             const limit = req.query.limit || 10
-            const types = await this.gametypeTable.findAll({
+            const types = await db.gametype.findAll({
+                offset: offset,
                 limit: limit
             });
-            res.status(200).json(JSON.stringify(types));
+            res.status(200).json(types);
         } catch(err) {
-            res.status(400).json({error: err.code});
+            res.status(400).json(err);
             console.log(err);
         }
     }

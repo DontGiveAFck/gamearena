@@ -1,17 +1,17 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var Leaderboard = sequelize.define('leaderboards', {
+  var Leaderboard = sequelize.define('leaderboard', {
       score: {
-          type: Sequelize.INTEGER,
+          type: DataTypes.INTEGER,
           defaultValue: 0,
           allowNull: false
       },
       accountId: {
-          type: Sequelize.INTEGER,
+          type: DataTypes.INTEGER,
           unique: 'unique'
       },
       gameId: {
-          type: Sequelize.INTEGER,
+          type: DataTypes.INTEGER,
           unique: 'unique'
       }
   }, {});

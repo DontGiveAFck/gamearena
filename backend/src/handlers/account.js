@@ -1,31 +1,31 @@
 const db = require('../db/database')
 const jwt = require('jsonwebtoken')
 
+const successObject = {
+    "result": "successful"
+}
+
 module.exports = class Account {
     constructor() {
-        this.accountTable = db.accounts
-        this.accountTable.sync( {force: false} );
-        this.accountsGamesTable = db.accountsgames
-        this.accountsGamesTable.sync( {force: false} )
-        this.leaderboardsTable = db.leaderboards
-        this.leaderboardsTable.sync( {force: false} )
+        db.account.sync( {force: false} )
+        db.accountgame.sync( {force: false} )
+        db.leaderboard.sync( {force: false} )
     }
 
     async setBalance(req, res) {
         try {
             let newBalance = req.body.newbalance;
-            let login = req.body.login;
-            const account = await this.accountTable.update({
+            let userId = req.body.userid;
+            await db.account.update({
                 balance: newBalance
             }, {
                 where: {
-                    login: login
+                    userId: userId
                 }
             });
-            res.status(200).json(account);
+            res.status(200).json(successObject);
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err.code}));
-            console.log(err);
+            res.status(400).json(err);
         }
     }
 
@@ -33,13 +33,13 @@ module.exports = class Account {
         try {
             const offset = req.query.offset || 0
             const limit = parseInt(req.query.limit) || 10;
-            const users = await this.accountTable.findAll({
+            const users = await db.account.findAll({
                 offset: offset,
                 limit: limit
             });
             res.status(200).json(users);
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err.code}));
+            res.status(400).json(err);
         }
     }
 
@@ -47,40 +47,38 @@ module.exports = class Account {
         try {
             const gameId = parseInt(req.body.gameid)
             const accountId = parseInt(req.body.accountid)
-            const account = await this.accountTable.findOne({
+            const account = await db.account.findOne({
                 where: {
                     id: accountId
                 }
             });
-            account.addGame(gameId)
-
-            const unit = this.leaderboardsTable.build({
-                accountId: accountId,
-                gameId: gameId
-            })
-
-            await unit.save()
-            res.status(200).json({'result': 'game added'})
+            const game = await account.addGame(gameId)
+            //await account.addLeaderboard(gameId)
+            res.status(200).json(successObject)
         } catch (err) {
-            console.log(err)
+            res.status(400).json(err)
         }
     }
 
     async getAccountGames(req, res) {
         try {
+            const limit = req.query.limit || 10
+            const offset = req.query.offset || 0
             const token = req.cookies.token
             const decoded = jwt.decode(token, {complete: true})
             const userId = decoded.payload.id
-            const account = await this.accountTable.findOne({
+            const account = await db.account.findOne({
                 where: {
                     userId: userId
                 }
             })
-           // console.log('Account:', account)
-            const games = await account.getGames()
+            const games = await account.getGames({
+                limit: limit,
+                offset: offset
+            })
             res.status(200).json(games)
         } catch (err) {
-            res.status(400).json(JSON.stringify(err))
+            res.status(400).json(err)
         }
     }
 
@@ -89,84 +87,95 @@ module.exports = class Account {
             const gameId = req.body.gameid
             const accountId = req.body.accountid
 
-            await this.leaderboardsTable.destroy({
+            const account = await db.account.findOne({
+                where: {
+                    userId: accountId
+                }
+            })
+
+            const leaderboard = await db.leaderboard.findOne({
                 where: {
                     gameId: gameId,
                     accountId: accountId
                 }
             })
-            const deletedGame = await this.accountsGamesTable.destroy({
-                where: {
-                    gameId: gameId,
-                    accountId: accountId
-                }
-            });
-            res.status(200).json(JSON.stringify(deletedGame));
+
+            await account.removeLeaderboard(leaderboard)
+            await account.removeGame(gameId)
+            res.status(200).json(successObject);
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err}))
+            res.status(400).json(err)
         }
     }
 
-    async getScores(req, res) {
+    async getLeaderboard(req, res) {
         const offset = req.query.offset || 0
         const limit = req.query.limit || 10
         try {
-            const scores = await this.leaderboardsTable.findAll({
+            const scores = await db.leaderboard.findAll({
                 order: [['score', 'DESC']],
                 offset: offset,
                 limit: limit
             })
-            res.status(200).json(JSON.stringify(scores))
+            res.status(200).json(scores)
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err}))
+            res.status(400).json(err)
         }
     }
 
-    async getScoresByGameId(req, res) {
+    async getLeaderboardByGameId(req, res) {
         const offset = req.query.offset || 0
         const limit = req.query.limit || 10
         const gameId = req.query.gameid
         try {
-            const scores = await this.leaderboardsTable.findAll({
+            const scores = await db.leaderboard.findAll({
                 order: [['score', 'DESC']],
                 offset: offset,
                 limit: limit,
                 where: {
-                    gameId: gameId
+                    gameId: gameId,
+                    accountId: {
+                        [db.Sequelize.Op.ne]: null
+                    }
                 }
             })
-            res.status(200).json(JSON.stringify(scores))
+            res.status(200).json(scores)
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err}))
+            res.status(400).json(err)
         }
     }
 
-    async getScoresByAccountId(req, res) {
-        const offset = req.query.offset || 0
-        const limit = req.query.limit || 10
-        const accountId = req.query.accountId
+    async getAccountLeaderboard(req, res) {
         try {
-            const scores = await this.leaderboardsTable.findAll({
-                order: [['score', 'DESC']],
-                offset: offset,
-                limit: limit,
+            const token = req.cookies.token
+            const decoded = jwt.decode(token, {complete: true})
+            const userId = decoded.payload.id
+            const offset = req.query.offset || 0
+            const limit = req.query.limit || 10
+            const accountId = req.query.accountId
+
+            const account = await db.account.findOne({
                 where: {
-                    accountId: accountId
+                    userId: userId
                 }
             })
-            res.status(200).json(JSON.stringify(scores))
+
+            const games = await account.getGames();
+            const leaderboards = await games.getLeaderboards()
+
+            res.status(200).json(leaderboards)
         } catch (err) {
-            res.status(400).json(JSON.stringify({error: err}))
+            res.status(400).json(err)
         }
     }
 
-    async setScore(req, res){
+    async setLeaderboard(req, res){
         try {
             const newScore = req.body.score
             const gameId = req.body.gameid
             const accountId = req.body.accountid
 
-                const scores = await this.leaderboardsTable.update({
+                const scores = await db.leaderboard.update({
                     score: newScore
                 }, {
                     where: {
@@ -174,10 +183,11 @@ module.exports = class Account {
                         accountId: accountId
                     }
                 })
-                res.status(200).json(JSON.stringify(scores))
+                res.status(200).json(successObject)
 
             } catch(err) {
-            res.status(400).json(JSON.stringify({error: err}))
+            res.status(400).json(err)
         }
     }
+
 }

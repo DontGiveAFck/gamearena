@@ -1,10 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
-    const Leaderboards = sequelize.define('leaderboard', {
+    const Leaderboard = sequelize.define('leaderboards', {
         score: {
             type: Sequelize.INTEGER,
             defaultValue: 0,
             allowNull: false
-        },
+        }/*,
+
         accountId: {
             type: Sequelize.INTEGER,
             unique: 'unique'
@@ -13,6 +14,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             unique: 'unique'
         }
+        */
     })
-    return Leaderboards
+    return Leaderboard
 }

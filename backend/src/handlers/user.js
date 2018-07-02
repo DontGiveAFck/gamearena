@@ -9,36 +9,36 @@ const USER_ADDED = 'User added: ';
 const config = require('../auth/config');
 const mainDir = process.cwd()
 
+const successObject = {
+    "result": "successful"
+}
+
 module.exports = class User {
     constructor() {
-        this.userTable = db.users
-        this.TableAccount = db.accounts
-        this.userTable.sync({force: false});
+        db.user.sync({force: false});
     }
 
     async addUser(req, res) {
         try {
             let data = req.body;
-            console.log(data.password);
             const encryptedPassword = await bcrypt.hash(data.password, SALT_ROUNDS);
-            let creds = this.userTable.build({
+            let user = db.user.build({
                 login: data.login,
                 password: encryptedPassword,
                 email: data.email,
                 username: data.username
             });
-            const user = await creds.save();
-            console.log(USER_ADDED, user);
-            let userAccount = this.TableAccount.build({
-                login: data.login,
+            await user.save()
+
+            let account = db.account.build({
                 balance: 0,
                 userId: user.id
             });
-            const account = await userAccount.save();
-            console.log(account);
-            res.status(200).json(JSON.stringify(user));
+            await account.save();
+
+            res.status(200).json(successObject);
         } catch (err) {
-            res.status(400).json(JSON.stringify({'error': err.code}));
+            res.status(400).json(err);
             console.log(err);
         }
     }
@@ -46,7 +46,7 @@ module.exports = class User {
     async removeUserByLogin(req, res) {
         let login = req.body.login
         try {
-            const removed = await this.userTable.update({
+            const removed = await db.user.update({
                 status: 'removed'
             }, {
                 where: {
@@ -54,29 +54,31 @@ module.exports = class User {
                 }
             })
 
-            res.status(200).json(JSON.stringify(removed))
+            res.status(200).json(successObject)
         } catch (err) {
-            res.status(400).json(JSON.stringify({'error': err.code}));
+            res.status(400).json(err);
             console.log(err);
         }
     }
 
     async getUsers(req, res) {
-        const limit = req.query.limit || 10;
+        const limit = req.query.limit || 10
+        const offset = req.query.offset || 0
         try {
-            const users = await this.userTable.findAll({
+            const users = await db.user.findAll({
+                offset: offset,
                 limit: limit
             });
-            res.status(200).json(JSON.stringify(users));
+            res.status(200).json(users);
         } catch (err) {
-            res.status(400).json(JSON.stringify({'error': err.code}));
+            res.status(400).json(err);
             console.log(err);
         }
     }
 
     async getUserById(id, cb) {
         try {
-            const user = await this.userTable.findOne({
+            const user = await db.user.findOne({
                 where: {
                     id: id
                 }
@@ -90,7 +92,7 @@ module.exports = class User {
     async signIn(req, res) {
         let data = req.body;
         try {
-            const user = await this.userTable.findOne({
+            const user = await db.user.findOne({
                 where: {
                     login: data.login
                 }
@@ -105,56 +107,53 @@ module.exports = class User {
                 const token = jwt.sign(payload, config.jwtOptions.secretOrKey);
                 res.cookie('token', token);
                 res.status(200).json({token: token})
-                //res.status(200).json(JSON.stringify(users));
             } else {
                 throw new Error().code = errors.INCORRECT_CRED;
             }
         } catch (err) {
-            res.status(400).json(JSON.stringify({'error': err.code}));
-            console.log(err);
+            res.status(400).json(err);
         }
     }
 
     async makeAdmin(req, res) {
         try {
             const userId = req.body.id;
-            const newAdmin = await this.userTable.update({
+            const newAdmin = await db.user.update({
                 admin: 1
             }, {
                 where: {
                     id: userId
                 }
             })
-            res.status(200).json(JSON.stringify(newAdmin))
+            res.status(200).json(successObject)
         } catch (err) {
-            res.status(400).json(JSON.stringify({'error': err.code}));
-            console.log(err);
+            res.status(400).json(err);
         }
     }
 
     async addAvatar(req, res) {
         if (!req.files) {
-            return res.status(400).send(JSON.stringify({error: 'No file'}))
+            return res.status(400).send(JSON.stringify({'result': 'no file'}))
         }
 
         try {
             const avatar = req.files.avatar
             const token = req.cookies.token
             const decoded = jwt.decode(token, {complete: true})
-            const avatarPath = mainDir + '/pictures/users/avatars/user' + decoded.payload.id + '.jpg'
+            const avatarPath = mainDir + '/pictures/user/avatars/user' + decoded.payload.id + '.jpg'
 
             await avatar.mv(avatarPath)
 
-            await this.userTable.update({
+            await db.user.update({
                 avatar: avatarPath
             }, {
                 where: {
                     id: decoded.payload.id
                 }
             })
-            res.status(200).json({'result' : 'success'})
+            res.status(200).json(successObject)
         } catch (err) {
-            return res.status(500).json(err)
+            return res.status(400).json(err)
 
         }
     }

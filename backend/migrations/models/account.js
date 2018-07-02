@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   var Account = sequelize.define('accounts', {
       login: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           unique: true,
           allowNull: false,
           validate: {
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
             */
       },
       balance: {
-          type: Sequelize.INTEGER,
+          type: DataTypes.INTEGER,
           allowNull: false,
           defaultValue: 0
       }

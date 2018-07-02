@@ -23,6 +23,7 @@ module.exports = (sequelize, Sequelize) => {
         }, */
         status: {
             type: Sequelize.STRING,
+            enum: ['active', 'removed', 'blocked'],
             defaultValue: 'active' // removed, blocked
         }
     })

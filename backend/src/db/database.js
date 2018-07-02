@@ -50,28 +50,28 @@ const db = {}
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 
-db.users = require('./models/User')(sequelize, Sequelize)
-db.accounts = require('./models/Account')(sequelize, Sequelize)
-db.accountsgames = require('./models/AccountGame')(sequelize, Sequelize)
-db.games = require('./models/Game')(sequelize, Sequelize)
-db.leaderboards = require('./models/Leaderboard')(sequelize, Sequelize)
-db.gametypes = require('./models/Gametype')(sequelize, Sequelize)
+db.user = require('./models/User')(sequelize, Sequelize)
+db.gametype = require('./models/Gametype')(sequelize, Sequelize)
+db.game = require('./models/Game')(sequelize, Sequelize)
+db.account = require('./models/Account')(sequelize, Sequelize)
+db.accountgame = require('./models/AccountGame')(sequelize, Sequelize)
+db.leaderboard = require('./models/Leaderboard')(sequelize, Sequelize)
 
 // one to one: 1 user - 1 account(foreign key in account)
-db.users.hasOne(db.accounts)
-db.accounts.belongsTo(db.users)
+db.user.hasOne(db.account)
+db.account.belongsTo(db.user)
 
-db.games.hasMany(db.leaderboards)
-db.accounts.hasMany(db.leaderboards)
+db.game.hasMany(db.leaderboard, {foreignKey: 'gameId', })
+db.account.hasMany(db.leaderboard, {foreignKey: 'accountId'})
+//db.leaderboard.belongsTo(db.account)
+//db.leaderboard.belongsTo(db.game, {as: 'gameId'})
 
-// one to many: 1 gametype - many games (foreign key in games)
-//db.gametypes.hasMany(db.games)
-db.games.belongsTo(db.gametypes, {as: 'gametype',foreignKey: 'type'})
+// one to many: 1 gametype - many game (foreign key in game)
+//db.gametype.hasMany(db.game)
+db.game.belongsTo(db.gametype, {as: 'gametype',foreignKey: 'type'})
 
-// many to many: many accounts - many games (through accounts_games)
-db.games.belongsToMany(db.accounts, {through: db.accountsgames})
-db.accounts.belongsToMany(db.games, {through: db.accountsgames})
-
-
+// many to many: many account - many game (through accounts_games)
+db.game.belongsToMany(db.account, {through: db.accountgame})
+db.account.belongsToMany(db.game, {through: db.accountgame})
 
 module.exports = db

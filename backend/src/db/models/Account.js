@@ -1,16 +1,12 @@
 module.exports = (sequelize, Sequelize) => {
     const Account = sequelize.define('accounts', {
-        login: {
-            type: Sequelize.STRING,
+        userId: {
+            type: Sequelize.INTEGER,
             unique: true,
-            allowNull: false,
-            validate: {
-                len: [5, 20]
-            }/*,
-
+            allowNull: false /*,
             references: {
                 model: UserModel,
-                key: 'login',
+                key: 'id',
             }
             */
         },

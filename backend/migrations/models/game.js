@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
           }
       },
       description: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           allowNull: true
       },
       status: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           defaultValue: 'active' // removed, blocked
       }
   }, {});

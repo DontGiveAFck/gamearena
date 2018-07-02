@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   var Gametype = sequelize.define('gametypes', {
       type: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           unique: true,
           allowNull: false,
           validate: {

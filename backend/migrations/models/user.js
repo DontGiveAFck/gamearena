@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('users', {
       login: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           unique: true,
           allowNull: false,
           validate: {
@@ -10,14 +10,14 @@ module.exports = (sequelize, DataTypes) => {
           }
       },
       password: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           allowNull: false,
           validate: {
               len: [1,260]
           }
       },
       email: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           unique: true,
           allowNull: false,
           validate: {
@@ -25,21 +25,21 @@ module.exports = (sequelize, DataTypes) => {
           }
       },
       username: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           validate: {
               len: [5,20]
           }
       },
       admin: {
-          type: Sequelize.BOOLEAN,
+          type: DataTypes.BOOLEAN,
           defaultValue: 0,
       },
       avatar: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           allowNull: true
       },
       status: {
-          type: Sequelize.STRING,
+          type: DataTypes.STRING,
           enum: ['active', 'removed', 'blocked'],
           defaultValue: 'active', // removed, blocked
           allowNull: false

@@ -21,7 +21,7 @@ module.exports = {
             allowNull: false,
             primaryKey: true,
             references: {
-                model: AccountModel,
+                model: 'account',
                 key: 'id',
             }
         },
@@ -30,7 +30,7 @@ module.exports = {
             allowNull: false,
             primaryKey: true,
             references: {
-                model: GameModel,
+                model: 'game',
                 key: 'id',
             }
 
@@ -38,6 +38,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('AccountGames');
+    return queryInterface.dropTable('accounts_games');
   }
 };
