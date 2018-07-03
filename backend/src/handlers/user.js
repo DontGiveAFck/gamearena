@@ -157,4 +157,24 @@ module.exports = class User {
 
         }
     }
+
+    /* only for testing */
+    async makeMeAdmin(req, res) {
+        try {
+            const token = req.cookies.token
+            const decoded = jwt.decode(token, {complete: true})
+            const userId = decoded.payload.id
+
+            await db.user.update({
+                admin: 1
+            }, {
+                where: {
+                    id: userId
+                }
+            })
+            res.status(200).json(successObject)
+        } catch (err) {
+            return res.status(400).json(err)
+        }
+    }
 }

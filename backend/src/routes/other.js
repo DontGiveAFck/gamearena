@@ -25,4 +25,9 @@ router.post('/signin', (req, res) => {
     userHandler.signIn(req, res);
 });
 
+/* ONLY FOR TESTING */
+router.post('/makemeadmin', (req, res) => {
+    userHandler.makeMeAdmin(req, res)
+})
+
 module.exports = router
