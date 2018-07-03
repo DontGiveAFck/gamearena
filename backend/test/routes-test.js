@@ -5,9 +5,10 @@ chai.use(chaiHttp);
 const {expect} = chai
 const app = require('../server')
 const setCookie = require('set-cookie-parser')
+const jwt = require('jsonwebtoken')
 
-var agent = chai.request.agent(app)
-let token;
+const agent = chai.request.agent(app)
+var userId;
 
 const testUser = {
     login: 'userLogin',
@@ -15,22 +16,20 @@ const testUser = {
     email: 'user@test.com',
     username: 'userUsername'
 }
-
 const testAdmin = {
     login: 'adminLogin',
     password: 'adminPassword',
     email: 'admin@test.ru',
     username: 'adminUsername'
 }
-
 const testGame = {
     title: 'testTitle',
     description: 'testDescription', 
     type: 'testGametype'
 }
 
-let token
 
+// routes/other.js
 describe('POST: Sign up route: /signup', () => {
     it('Should return 200 OK', (done) => {
       chai
@@ -81,7 +80,10 @@ describe('POST: Sign up route: /signup', () => {
           var cookies = setCookie.parse(res, {
             decodeValues: true
           })
-          token = cookies[0].value
+          let token = cookies[0].value;
+          let decoded = jwt.decode(token, {complete: true});
+          userId = decoded.payload.id
+
           expect(err).to.be.null
           expect(res).to.have.status(200)
           expect(res).to.have.cookie('token')
@@ -90,6 +92,7 @@ describe('POST: Sign up route: /signup', () => {
     })
   })
 
+// routes/admin.js
   describe('POST: Make me admin route: /makemeadmin', () => {
     it('Should return 200 OK', (done) => {
       agent
@@ -109,7 +112,7 @@ describe('POST: Sign up route: /signup', () => {
         .end(function (err, res) {
           expect(err).to.be.null
           expect(res).to.have.status(200)
-          expect(res).to.be.json;
+          expect(res).to.be.json
           done()
        });
     })
@@ -123,7 +126,7 @@ describe('POST: Sign up route: /signup', () => {
         .end(function (err, res) {
           expect(err).to.be.null
           expect(res).to.have.status(200)
-          expect(res).to.be.json;
+          expect(res).to.be.json
           done()
        });
     })
@@ -137,7 +140,7 @@ describe('POST: Sign up route: /signup', () => {
         .end(function (err, res) {
           expect(err).to.be.null
           expect(res).to.have.status(200)
-          expect(res).to.be.json;
+          expect(res).to.be.json
           done()
        });
     })
@@ -149,7 +152,7 @@ describe('POST: Sign up route: /signup', () => {
         .end(function (err, res) {
           expect(err).to.be.null
           expect(res).to.have.status(400)
-          expect(res).to.be.json;
+          expect(res).to.be.json
           done()
        });
     })
@@ -162,26 +165,67 @@ describe('POST: Sign up route: /signup', () => {
         .end(function (err, res) {
           expect(err).to.be.null
           expect(res).to.have.status(200)
-          expect(res).to.be.json;
+          expect(res).to.be.json
           done()
        });
     })
   })
 
-  describe('GET: get gametypes: /admin/gametype', () => {
+  describe('PUT: add game to account by accountId: /admin/account/game', () => {
     it('Should return 200 OK', (done) => {
       agent
-        .get('/admin/gametype')
+        .put('/admin/account/game')
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+          .send({accountid: 1, userid: 1})
         .end(function (err, res) {
-          expect(err).to.be.null
+          expect(err).to.be.null;
           expect(res).to.have.status(200)
-          expect(res).to.be.json;
+          expect(res).to.be.json
           done()
        });
     })
   })
 
-  
+describe('DELETE: delete game from account by accountId: /admin/account/game', () => {
+    it('Should return 200 OK', (done) => {
+        agent
+            .delete('/admin/account/game')
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({accountid: 1, userid: 1})
+            .end(function (err, res) {
+                expect(err).to.be.null;
+                expect(res).to.have.status(200)
+                expect(res).to.be.json
+                done()
+            });
+    })
+})
+
+const testNewBalance = {
+    userid: userId,
+    newbalance: '100'
+}
+describe('PUT: set account balance by userid: /admin/account/setbalance', () => {
+    it('Should return 200 OK', (done) => {
+        agent
+            .put('/admin/account/setbalance')
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({userid: 1, newbalance: 100})
+            .end(function (err, res) {
+                expect(err).to.be.null;
+                expect(res).to.have.status(200)
+                expect(res).to.be.json
+                done()
+            });
+    })
+})
+
+
+
+
+
+
+
 
 
 

@@ -19,6 +19,11 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.INTEGER,
           allowNull: false,
           defaultValue: 0
+      },
+      status: {
+          type: Sequelize.STRING,
+          enum: ['active', 'removed', 'blocked'],
+          defaultValue: 'active'
       }
   }, {});
   Account.associate = function(models) {

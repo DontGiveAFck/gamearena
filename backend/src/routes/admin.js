@@ -19,14 +19,14 @@ router.get('/user', passport.authenticate('jwt.admin', { session: false }), (req
 })
 
 /**
- * Delete user by login.
- * @name Delete user by login
+ * Delete user by id.
+ * @name Delete user by id
  * @route {DELETE} /admin/user
  * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
- * @bodyparam {String} login user login
+ * @bodyparam {String} userid
  */
 router.delete('/user', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
-    userHandler.removeUserByLogin(req, res);
+    userHandler.removeUserByUserId(req, res);
 })
 
 /**

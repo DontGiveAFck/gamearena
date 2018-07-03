@@ -2,10 +2,7 @@ const db = require('../db/database')
 const bcrypt = require('bcrypt');
 const errors = require('../errors');
 const jwt = require('jsonwebtoken');
-const path = require('path')
-const util = require('util')
 const SALT_ROUNDS = 10;
-const USER_ADDED = 'User added: ';
 const config = require('../auth/config');
 const mainDir = process.cwd()
 
@@ -43,14 +40,22 @@ module.exports = class User {
         }
     }
 
-    async removeUserByLogin(req, res) {
-        let login = req.body.login
+    async removeUserByUserId(req, res) {
+        let userId = req.body.userid
         try {
-            const removed = await db.user.update({
+            await db.account.update({
                 status: 'removed'
             }, {
                 where: {
-                    login: login
+                    userId: userId
+                }
+            })
+
+            await db.user.update({
+                status: 'removed'
+            }, {
+                where: {
+                    id: userId
                 }
             })
 

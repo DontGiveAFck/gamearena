@@ -14,8 +14,8 @@ module.exports = class Account {
 
     async setBalance(req, res) {
         try {
-            let newBalance = req.body.newbalance;
-            let userId = req.body.userid;
+            let newBalance = req.body.newbalance
+            let userId = req.body.userid
             await db.account.update({
                 balance: newBalance
             }, {
@@ -89,7 +89,7 @@ module.exports = class Account {
 
             const account = await db.account.findOne({
                 where: {
-                    userId: accountId
+                    id: accountId
                 }
             })
 
