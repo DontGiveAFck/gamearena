@@ -53,7 +53,7 @@ module.exports = class Account {
                 }
             });
             const game = await account.addGame(gameId)
-            //await account.addLeaderboard(gameId)
+            await account.addLeaderboard(gameId)
             res.status(200).json(successObject)
         } catch (err) {
             res.status(400).json(err)

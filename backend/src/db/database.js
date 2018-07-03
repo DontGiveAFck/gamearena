@@ -63,7 +63,7 @@ db.account.belongsTo(db.user)
 
 db.game.hasMany(db.leaderboard, {foreignKey: 'gameId', })
 db.account.hasMany(db.leaderboard, {foreignKey: 'accountId'})
-//db.leaderboard.belongsTo(db.account)
+db.leaderboard.belongsTo(db.account)
 //db.leaderboard.belongsTo(db.game, {as: 'gameId'})
 
 // one to many: 1 gametype - many game (foreign key in game)
