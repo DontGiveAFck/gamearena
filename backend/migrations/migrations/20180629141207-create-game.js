@@ -40,6 +40,11 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      status: {
+          type: Sequelize.STRING,
+          enum: ['active', 'removed', 'blocked'],
+          defaultValue: 'active'
       }
     });
   },

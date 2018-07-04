@@ -4,7 +4,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             defaultValue: 0,
             allowNull: false
-        }/*,
+        },
 
         accountId: {
             type: Sequelize.INTEGER,
@@ -14,7 +14,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             unique: 'unique'
         }
-        */
+        
     })
     return Leaderboard
 }

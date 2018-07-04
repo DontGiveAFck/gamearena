@@ -41,12 +41,12 @@ router.get('/leaderboard/all', passport.authenticate('jwt.user', { session: fals
 /**
  * Get leaderboard of one game.
  * @name Get leaderboard of one game
- * @route {GET} /user/account/game
+ * @route {GET} /user/leaderboard/game
  * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
  * @queryparam {String} gameid
  */
 router.get('/leaderboard/game', passport.authenticate('jwt.user', { session: false}), (req, res) => {
-        accountHandler.getScoresByGameId(req, res)
+        accountHandler.getLeaderboardByGameId(req, res)
 })
 /**
  * Get account scores in all game.
@@ -66,9 +66,6 @@ router.get('/leaderboard/account', passport.authenticate('jwt.user', { session: 
  */
 router.post('/avatar/add', passport.authenticate('jwt.user', { session: false}), (req, res) => {
     userHandler.addAvatar(req, res)
-})
-router.get('/account/leaderboard', passport.authenticate('jwt.user', { session: false}), (req, res) => {
-    accountHandler.getAccountLeaderboard(req, res)
 })
 
 module.exports = router;

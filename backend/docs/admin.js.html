@@ -37,113 +37,113 @@ const userHandler = new User();
 const accountHandler = new Account();
 
 /**
- * Get all users.
- * @name Get all users
- * @route {GET} /admin/users
+ * Get all user.
+ * @name Get all user
+ * @route {GET} /admin/user
  * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
  */
-router.get('/users', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
+router.get('/user', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     userHandler.getUsers(req, res);
 })
 
 /**
- * Delete user by login.
- * @name Delete user by login
- * @route {DELETE} /admin/users
+ * Delete user by id.
+ * @name Delete user by id
+ * @route {DELETE} /admin/user
  * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
- * @bodyparam {String} login user login
+ * @bodyparam {String} userid
  */
-router.delete('/users', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
-    userHandler.removeUserByLogin(req, res);
+router.delete('/user', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
+    userHandler.removeUserByUserId(req, res);
 })
 
 /**
  * Add game.
  * @name Add game
- * @route {PUT} /admin/games
+ * @route {PUT} /admin/game
  * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
  * @bodyparam {String} title game title
  * @bodyparam {String} description game description
  * @bodyparam {String} type game type
  */
-router.put('/games', passport.authenticate('jwt.admin', { session: false } ), (req, res) => {
+router.put('/game', passport.authenticate('jwt.admin', { session: false } ), (req, res) => {
     gameHandler.addGame(req, res);
 })
 
 /**
  * Delete game by title.
  * @name Delete game by title
- * @route {DELETE} /admin/games
+ * @route {DELETE} /admin/game
  * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
  * @bodyparam {String} title game title
  */
-router.delete('/games', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
+router.delete('/game', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     gameHandler.removeGameByTitle(req, res);
 })
 
 /**
  * Get game types.
  * @name Get game types
- * @route {GET} /admin/gametypes
+ * @route {GET} /admin/gametype
  * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
  */
-router.get('/gametypes', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
+router.get('/gametype', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     gameHandler.getGameTypes(req, res)
 })
 /**
  * Add game type.
  * @name Add game type
- * @route {POST} /admin/gametypes
+ * @route {POST} /admin/gametype
  * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
  * @bodyparam {String} type gametype
  */
-router.post('/gametypes', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
+router.post('/gametype', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     gameHandler.addGameType(req, res)
 })
 /**
  * Set account balance.
  * @name Add Set account balance
- * @route {PUT} /admin/accounts/setbalance
+ * @route {PUT} /admin/account/setbalance
  * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
  * @bodyparam {String} newbalance new account balance
- * @bodyparam {String} login account login
+ * @bodyparam {String} userid userid
  */
-router.put('/accounts/setbalance', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
+router.put('/account/setbalance', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     accountHandler.setBalance(req, res);
 })
 /**
  * Add game to account.
  * @name Add game to account
- * @route {PUT} /admin/accounts/game
+ * @route {PUT} /admin/account/game
  * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
  * @bodyparam {String} accountid
  * @bodyparam {String} gameid
  */
-router.put('/accounts/game', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
+router.put('/account/game', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     accountHandler.addGameToAccount(req, res)
 })
 /**
  * Remove game from account.
  * @name Remove game from account
- * @route {DELETE} /admin/accounts/game
+ * @route {DELETE} /admin/account/game
  * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
  * @bodyparam {String} accountid
  * @bodyparam {String} gameid
  */
-router.delete('/accounts/game', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
+router.delete('/account/game', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     accountHandler.removeGameFromAccount(req, res)
 })
 /**
  * Set account score.
  * @name Set account score in game
- * @route {PUT} /admin/accounts/setscore
+ * @route {PUT} /admin/account/leaderboard
  * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
  * @bodyparam {String} score new score
  * @bodyparam {String} gameid
  * @bodyparam {String} accountId
  */
-router.put('/accounts/setscore', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
-    accountHandler.setScore(req, res)
+router.put('/account/leaderboard', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
+    accountHandler.setLeaderboard(req, res)
 })
 /**
  * Give admin rights to user.
@@ -166,13 +166,13 @@ module.exports = router</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">Add game</a></li><li><a href="global.html">Add game to account</a></li><li><a href="global.html">Add game type</a></li><li><a href="global.html">Add Set account balance</a></li><li><a href="global.html">Delete game by title</a></li><li><a href="global.html">Delete user by login</a></li><li><a href="global.html">Get account scores in all games</a></li><li><a href="global.html">Get all games</a></li><li><a href="global.html">Get all users</a></li><li><a href="global.html">Get game types</a></li><li><a href="global.html">Get games on current account</a></li><li><a href="global.html">Get leaderboard of one game</a></li><li><a href="global.html">Give admin rights to user</a></li><li><a href="global.html">Remove game from account</a></li><li><a href="global.html">Set account score in game</a></li><li><a href="global.html">Sign in</a></li><li><a href="global.html">Sign up</a></li><li><a href="global.html">Upload user avatar</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">Add game</a></li><li><a href="global.html">Add game to account</a></li><li><a href="global.html">Add game type</a></li><li><a href="global.html">Add Set account balance</a></li><li><a href="global.html">Delete game by title</a></li><li><a href="global.html">Delete user by id</a></li><li><a href="global.html">Get account scores in all game</a></li><li><a href="global.html">Get all game</a></li><li><a href="global.html">Get all user</a></li><li><a href="global.html">Get game on current account</a></li><li><a href="global.html">Get game types</a></li><li><a href="global.html">Get leaderboard of one game</a></li><li><a href="global.html">Give admin rights to user</a></li><li><a href="global.html">Remove game from account</a></li><li><a href="global.html">Set account score in game</a></li><li><a href="global.html">Sign in</a></li><li><a href="global.html">Sign up</a></li><li><a href="global.html">Upload user avatar</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jun 29 2018 23:01:44 GMT+0300 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 04 2018 13:35:21 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

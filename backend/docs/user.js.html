@@ -37,54 +37,53 @@ const userHandler = new User();
 const accountHandler = new Account();
 
 /**
- * Get all games.
- * @name Get all games
- * @route {GET} /user/games
+ * Get all game.
+ * @name Get all game
+ * @route {GET} /user/game
  * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
  * @queryparam {String} title if parameter exist return only one game
  */
-router.get('/games', passport.authenticate('jwt.user', { session: false }), (req, res) => {
+router.get('/game', passport.authenticate('jwt.user', { session: false }), (req, res) => {
     req.query.title == undefined ?
         gameHandler.getGames(req, res) :
         gameHandler.getGameByTitle(req, res);
 });
 /**
- * Get games on current account.
- * @name Get games on current account
- * @route {GET} /user/account/games
+ * Get game on current account.
+ * @name Get game on current account
+ * @route {GET} /user/account/game
  * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
  */
-router.get('/account/games', passport.authenticate('jwt.user', { session: false }), (req, res) => {
+router.get('/account/game', passport.authenticate('jwt.user', { session: false }), (req, res) => {
     accountHandler.getAccountGames(req, res)
 })
 /**
  * Get full leaderboard list.
- * @name Get games on current account
+ * @name Get game on current account
  * @route {GET} /user/leaderboard/all
  * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
  */
 router.get('/leaderboard/all', passport.authenticate('jwt.user', { session: false }), (req, res) => {
-    accountHandler.getScore(req, res)
+    accountHandler.getLeaderboard(req, res)
 })
 /**
  * Get leaderboard of one game.
  * @name Get leaderboard of one game
- * @route {GET} /user/account/games
+ * @route {GET} /user/leaderboard/game
  * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
  * @queryparam {String} gameid
  */
 router.get('/leaderboard/game', passport.authenticate('jwt.user', { session: false}), (req, res) => {
-        accountHandler.getScoresByGameId(req, res)
+        accountHandler.getLeaderboardByGameId(req, res)
 })
 /**
- * Get account scores in all games.
- * @name Get account scores in all games
+ * Get account scores in all game.
+ * @name Get account scores in all game
  * @route {GET} /user/leaderboard/account
  * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
- * @queryparam {String} accountid
  */
 router.get('/leaderboard/account', passport.authenticate('jwt.user', { session: false}), (req, res) => {
-    accountHandler.getScoresByAccountId(req, res)
+    accountHandler.getAccountLeaderboard(req, res)
 })
 /**
  * Upload avatar.
@@ -107,13 +106,13 @@ module.exports = router;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">Add game</a></li><li><a href="global.html">Add game to account</a></li><li><a href="global.html">Add game type</a></li><li><a href="global.html">Add Set account balance</a></li><li><a href="global.html">Delete game by title</a></li><li><a href="global.html">Delete user by login</a></li><li><a href="global.html">Get account scores in all games</a></li><li><a href="global.html">Get all games</a></li><li><a href="global.html">Get all users</a></li><li><a href="global.html">Get game types</a></li><li><a href="global.html">Get games on current account</a></li><li><a href="global.html">Get leaderboard of one game</a></li><li><a href="global.html">Give admin rights to user</a></li><li><a href="global.html">Remove game from account</a></li><li><a href="global.html">Set account score in game</a></li><li><a href="global.html">Sign in</a></li><li><a href="global.html">Sign up</a></li><li><a href="global.html">Upload user avatar</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">Add game</a></li><li><a href="global.html">Add game to account</a></li><li><a href="global.html">Add game type</a></li><li><a href="global.html">Add Set account balance</a></li><li><a href="global.html">Delete game by title</a></li><li><a href="global.html">Delete user by id</a></li><li><a href="global.html">Get account scores in all game</a></li><li><a href="global.html">Get all game</a></li><li><a href="global.html">Get all user</a></li><li><a href="global.html">Get game on current account</a></li><li><a href="global.html">Get game types</a></li><li><a href="global.html">Get leaderboard of one game</a></li><li><a href="global.html">Give admin rights to user</a></li><li><a href="global.html">Remove game from account</a></li><li><a href="global.html">Set account score in game</a></li><li><a href="global.html">Sign in</a></li><li><a href="global.html">Sign up</a></li><li><a href="global.html">Upload user avatar</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jun 29 2018 23:01:44 GMT+0300 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 04 2018 13:35:21 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

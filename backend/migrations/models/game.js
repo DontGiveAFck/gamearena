@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
           type: DataTypes.STRING,
+          enum: ['active', 'removed', 'blocked'],
           defaultValue: 'active' // removed, blocked
       }
   }, {});

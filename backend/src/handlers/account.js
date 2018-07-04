@@ -52,8 +52,9 @@ module.exports = class Account {
                     id: accountId
                 }
             });
-            const game = await account.addGame(gameId)
-            await account.addLeaderboard(gameId)
+            await account.addGame(gameId)
+            const leaderboard = await db.leaderboard.create({gameId: gameId})
+            await account.addLeaderboard(leaderboard)
             res.status(200).json(successObject)
         } catch (err) {
             res.status(400).json(err)
@@ -152,17 +153,17 @@ module.exports = class Account {
             const userId = decoded.payload.id
             const offset = req.query.offset || 0
             const limit = req.query.limit || 10
-            const accountId = req.query.accountId
 
             const account = await db.account.findOne({
+                limit: limit,
+                offset: offset,
                 where: {
                     userId: userId
                 }
             })
 
-            const games = await account.getGames();
-            const leaderboards = await games.getLeaderboards()
-
+           // const games = await account.getGames();
+            const leaderboards = await account.getLeaderboards()
             res.status(200).json(leaderboards)
         } catch (err) {
             res.status(400).json(err)
@@ -175,7 +176,7 @@ module.exports = class Account {
             const gameId = req.body.gameid
             const accountId = req.body.accountid
 
-                const scores = await db.leaderboard.update({
+                scores = await db.leaderboard.update({
                     score: newScore
                 }, {
                     where: {
