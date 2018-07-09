@@ -110,13 +110,21 @@ module.exports = class User {
                     admin: user.get('admin')
                 };
                 const token = jwt.sign(payload, config.jwtOptions.secretOrKey);
-                res.cookie('token', token);
+                res.cookie('token', token)
                 res.status(200).json({token: token})
             } else {
-                throw new Error().code = errors.INCORRECT_CRED;
+                res.status(400).json({
+                    errors: {
+                        result: "Incorrect credentials"
+                    }
+                })
             }
         } catch (err) {
-            res.status(400).json(err);
+            res.status(400).json({
+                errors: {
+                    result: "Incorrect credentials"
+                }
+            });
         }
     }
 
