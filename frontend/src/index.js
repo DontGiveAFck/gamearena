@@ -1,20 +1,34 @@
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import React from 'react';
-import { store, history} from './store';
+import ReactDOM from 'react-dom';
+import App from './App';
+import {BrowserRouter, Route} from 'react-router-dom'
+import 'semantic-ui-css/semantic.min.css'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import registerServiceWorker from './registerServiceWorker'
+import rootReducer from './rootReducer'
+import { userLoggedIn } from "./actions/auth"
+import { Cookies } from 'react-cookie'
 
-import { Route, Switch } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
+const cookies = new Cookies()
 
-import App from './components/App';
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
 
-ReactDOM.render((
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Switch>
-        <Route path="/" component={App} />
-      </Switch>
-    </ConnectedRouter>
-  </Provider>
+let token
+if (token = cookies.get('token')) {
+    const user = {
+        token: token
+    }
+    store.dispatch(userLoggedIn(user))
+}
 
-), document.getElementById('root'));
+ReactDOM.render(
+    <BrowserRouter>
+        <Provider store={store}>
+            <Route component={App} />
+        </Provider>
+    </BrowserRouter>,
+    document.getElementById('root'));
+registerServiceWorker();
