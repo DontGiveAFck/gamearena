@@ -2,6 +2,7 @@ import React from 'react'
 import { Form, Button, Message } from 'semantic-ui-react'
 import Validator from 'validator'
 import InlineError from '../messages/InlineError'
+import {Link} from 'react-router-dom'
 
 class SignupForm extends React.Component {
     constructor(props) {
@@ -109,8 +110,9 @@ class SignupForm extends React.Component {
                     />
                 </Form.Field>
                 {errors.password && <InlineError text={errors.password}/>}
-
+                <br/>
                 <Button className='primary'>Sign up</Button>
+                <button type='button' className='ui button'><Link to='/'>Home</Link></button>
             </Form>
         )
     }
