@@ -6,7 +6,6 @@ import { login } from '../../actions/auth'
 class LoginPage extends React.Component {
     constructor(props) {
         super(props)
-
     }
 
     submit = data =>
@@ -22,5 +21,5 @@ class LoginPage extends React.Component {
     }
 }
 
-//first - data from store to component
+// first - data from store to component
 export default connect(null, { login })(LoginPage)

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Button, Message } from 'semantic-ui-react'
 import InlineError from '../messages/InlineError'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -26,25 +26,29 @@ class LoginForm extends React.Component {
 
     validate = (data) => {
         const errors = {}
-        if(data.login.length > 20 || data.login.length < 5) errors.login = 'Invalid login'
-        if(data.password.length > 50 || data.password.length < 5) errors.password = 'Password too short or too long'
+        if (data.login.length > 20 || data.login.length < 5) {
+            errors.login = 'Invalid login'
+        }
+        if (data.password.length > 50 || data.password.length < 5) {
+            errors.password = 'Password too short or too long'
+        }
         return errors
     }
 
-    onSubmit = (e) => {
+    onSubmit = () => {
         let errors = this.validate(this.state.data)
         this.setState({ errors })
 
-        if(Object.keys(errors).length === 0) {
+        if (Object.keys(errors).length === 0) {
             this.setState({ loading: true })
             this.props
                 .submit(this.state.data)
-                .catch(err => this.setState({ errors: err.response.data.errors, loading: false}))
+                .catch(err => this.setState({ errors: err.response.data.errors, loading: false }))
         }
     }
 
     render() {
-        const {data, errors, loading} = this.state
+        const { data, errors, loading } = this.state
 
         return (
             <Form className='ui form' onSubmit={this.onSubmit} loading={loading}>
@@ -54,10 +58,10 @@ class LoginForm extends React.Component {
                         <p>{errors.result}</p>
                     </Message>
                 )}
-                <Form.Field className="field" error={!!errors.login}>
-                    <label htmlFor="login">Login</label>
+                <Form.Field className='field' error={!!errors.login}>
+                    <label htmlFor='login'>Login</label>
                     <input
-                        type="text"
+                        type='text'
                         id='login'
                         name='login'
                         placeholder='Enter your login'
@@ -67,9 +71,9 @@ class LoginForm extends React.Component {
                 </Form.Field>
                 {errors.login && <InlineError text={errors.login}/>}
                 <Form.Field error={!!errors.password}>
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor='password'>Password</label>
                     <input
-                        type="password"
+                        type='password'
                         id='password'
                         name='password'
                         placeholder='Password also required'

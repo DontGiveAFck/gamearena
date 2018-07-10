@@ -12,7 +12,7 @@ const LoggedIn = (props) => {
     )
 }
 
-const LoggedOut = (props) => {
+const LoggedOut = () => {
     return (
         <div>
             <Link to='/login'><Button>Login</Button></Link>
@@ -25,7 +25,7 @@ const HomePage = (props) => {
     return (
         <div>
             <h1>Home Page</h1>
-            {props.isAuthenticated ? <LoggedIn logout={props.logout} /> : <LoggedOut />} 
+            {props.isAuthenticated ? <LoggedIn logout={props.logout} /> : <LoggedOut />}
         </div>
     )
 }

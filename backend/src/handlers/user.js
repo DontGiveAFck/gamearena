@@ -35,8 +35,11 @@ module.exports = class User {
 
             res.status(200).json(successObject);
         } catch (err) {
-            res.status(400).json(err);
-            console.log(err);
+            res.status(400).json({
+                errors: {
+                    message: err.errors[0].message
+                }
+            });
         }
     }
 
