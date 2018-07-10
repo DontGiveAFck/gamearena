@@ -8,8 +8,8 @@ const HomePage = (props) => {
     return (
         <div>
             <h1>Home Page</h1>
-            {props.isAuthenticated ? <button onClick={props.logout}>Logout</button> : <Button primaty><Link to='/login'>Login</Link></Button>} 
-            {!props.isAuthenticated && <Button primaty><Link to='/signup'>Signup</Link></Button>}
+            {props.isAuthenticated ? <button onClick={props.logout}>Logout</button> : <Link to='/login'><Button primaty>Login</Button></Link>} 
+            {!props.isAuthenticated && <Link to='/signup'><Button primaty>Signup</Button></Link>}
         </div>
     )
 }

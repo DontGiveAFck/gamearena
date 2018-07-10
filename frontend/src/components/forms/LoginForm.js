@@ -79,7 +79,7 @@ class LoginForm extends React.Component {
                 </Form.Field>
                 {errors.password && <InlineError text={errors.password}/>} <br/>
                 <Button className='primary'>Login</Button>
-                <button type='button' className='ui button'><Link to='/'>Home</Link></button>
+                <Link to='/'><button type='button' className='ui button'>Home</button></Link>
             </Form>
         )
     }

@@ -112,7 +112,8 @@ class SignupForm extends React.Component {
                 {errors.password && <InlineError text={errors.password}/>}
                 <br/>
                 <Button className='primary'>Sign up</Button>
-                <button type='button' className='ui button'><Link to='/'>Home</Link></button>
+                <Link to='/'><button type='button' className='ui button'>Home</button></Link>
+                
             </Form>
         )
     }
