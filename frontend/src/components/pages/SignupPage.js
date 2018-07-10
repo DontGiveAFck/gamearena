@@ -1,5 +1,5 @@
 import React from 'react'
-import SignupForm from "../forms/SignupForm"
+import SignupForm from '../forms/SignupForm'
 import {connect} from 'react-redux'
 import {signup} from '../../actions/auth'
 
@@ -9,7 +9,7 @@ class SignupPage extends React.Component {
     }
 
     submit = data =>
-        this.props.signup(data).then(() => this.props.history.push('/login'))
+        this.props.signup(data)
 
     render() {
         return (
@@ -21,4 +21,4 @@ class SignupPage extends React.Component {
     }
 }
 
-export default connect(null, {signup})(SignupPage)
+export default connect(null, { signup })(SignupPage)
