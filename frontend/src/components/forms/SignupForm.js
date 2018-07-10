@@ -108,7 +108,7 @@ class SignupForm extends React.Component {
                         value={data.username}
                         onChange={this.onChange}
                     />
-                </Form.Field>
+                </Form.Field>   
                 {errors.password && <InlineError text={errors.password}/>}
                 <br/>
                 <Button className='primary'>Sign up</Button>
