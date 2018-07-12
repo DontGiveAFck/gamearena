@@ -1,7 +1,10 @@
 import { USER_LOGGED_IN, USER_LOGGED_OUT, USER_SIGNED_UP } from '../types'
-import api from '../api'
+//import api from '../api'
+import AuthService from '../api/AuthService'
 import { Cookies } from 'react-cookie'
 const cookies = new Cookies()
+
+const api = new AuthService()
 
 export const userLoggedIn = user => ({
     type: USER_LOGGED_IN,
@@ -9,7 +12,7 @@ export const userLoggedIn = user => ({
 })
 
 export const userLoggedOut = () => ({
-    type: USER_LOGGED_OUT,
+    type: USER_LOGGED_OUT
 })
 
 export const userSignedUp = () => ({
@@ -17,7 +20,7 @@ export const userSignedUp = () => ({
 })
 
 export const login = (data) => dispatch =>
-    api.user.login(data).then(user => dispatch(userLoggedIn(user)))
+    api.signin(data).then(user => dispatch(userLoggedIn(user)))
 
 export const logout = () => dispatch => {
     cookies.remove('token')
@@ -25,5 +28,5 @@ export const logout = () => dispatch => {
 }
 
 export const signup = (data) => dispatch =>
-    api.user.signup(data).then(user => dispatch(userSignedUp(user)))
+    api.signup(data).then(user => dispatch(userSignedUp(user)))
 
