@@ -1,7 +1,7 @@
 import React from 'react'
 import SignupForm from '../forms/SignupForm'
-import {connect} from 'react-redux'
-import {signup} from '../../actions/auth'
+import { connect } from 'react-redux'
+import { signup } from '../../actions-creators/auth-action-creators'
 
 class SignupPage extends React.Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class SignupPage extends React.Component {
                 <h1>Signup page</h1>
                 <SignupForm submit={this.submit}/>
             </div>
-        );
+        )
     }
 }
 
