@@ -75,7 +75,7 @@ class SignupForm extends React.Component {
                         <p>{errors.message}</p>
                     </Message>
                 )}
-                
+               
                 <Form.Field className='field' error={!!errors.email}>
                     <label htmlFor='email'>Email</label>
                     <input

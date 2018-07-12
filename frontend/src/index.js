@@ -12,11 +12,8 @@ import registerServiceWorker from './registerServiceWorker'
 import rootReducer from './rootReducer'
 import { userLoggedIn } from './action-creators/auth-action-creators'
 import { Cookies } from 'react-cookie'
-
 const cookies = new Cookies()
-
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
-
 let token
 if (token = cookies.get('token')) {
     const user = {

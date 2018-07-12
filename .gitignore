@@ -10,3 +10,6 @@ npm-debug.log*
 # Environment variables
 /backend/.env
 
+/backend/.tern-project
+/frontend/.tern-project
+/frontend/.eslintrc
