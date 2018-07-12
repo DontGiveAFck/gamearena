@@ -1,3 +1,4 @@
+
 const db = require('../db/database')
 const bcrypt = require('bcrypt');
 const errors = require('../errors');
@@ -110,7 +111,8 @@ module.exports = class User {
             if (match) {
                 let payload = {
                     id: user.get('id'),
-                    admin: user.get('admin')
+                    admin: user.get('admin'),
+                    username: user.get('username')
                 };
                 const token = jwt.sign(payload, config.jwtOptions.secretOrKey);
                 res.cookie('token', token)
