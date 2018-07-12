@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import registerServiceWorker from './registerServiceWorker'
 import rootReducer from './rootReducer'
-import { userLoggedIn } from './actions/auth'
+import { userLoggedIn } from './action-creators/auth-action-creators'
 import { Cookies } from 'react-cookie'
 
 const cookies = new Cookies()
