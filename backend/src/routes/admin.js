@@ -8,121 +8,326 @@ const gameHandler = new Game();
 const userHandler = new User();
 const accountHandler = new Account();
 
+
+
 /**
- * Get all user.
- * @name Get all user
- * @route {GET} /admin/user
- * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
+ * @swagger
+ * /admin/user:
+ *      get:
+ *          tags:
+ *              - admin
+ *          description: Get 
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: limit
+ *                description: Limit
+ *                required: false
+ *                default: 10
+ *                type: string
+ *                in: query
+ *              - name: offset
+ *                description: Offset
+ *                required: false
+ *                default: 0
+ *                type: string
+ *                in: query
+ *          responses:
+ *              200:
+ *                  description: An array of users
+ *              400:
+ *                  description: Error message
  */
 router.get('/user', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     userHandler.getUsers(req, res);
 })
 
 /**
- * Delete user by id.
- * @name Delete user by id
- * @route {DELETE} /admin/user
- * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
- * @bodyparam {String} userid
+ * @swagger
+ * /admin/user:
+ *      delete:
+ *          tags:
+ *              - admin
+ *          description: Remove user by user id
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: userid
+ *                description: User id
+ *                required: true
+ *                type: string
+ *                in: dataForm
+ *          responses:
+ *              200:
+ *                  description: Success message
+ *              400:
+ *                  description: Error message
  */
 router.delete('/user', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     userHandler.removeUserByUserId(req, res);
 })
 
 /**
- * Add game.
- * @name Add game
- * @route {PUT} /admin/game
- * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
- * @bodyparam {String} title game title
- * @bodyparam {String} description game description
- * @bodyparam {String} type game type
+ * @swagger
+ * /admin/game:
+ *      put:
+ *          tags:
+ *              - admin
+ *          description: Remove user by user id
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: title
+ *                description: Game title
+ *                required: true
+ *                type: string
+ *                in: dataForm
+ *              - name: description
+ *                description: Game description
+ *                required: true
+ *                type: string
+ *                in: dataForm
+ *              - name: type
+ *                description: Game type
+ *                required: false
+ *                type: string
+ *                in: dataForm
+ *          responses:
+ *              200:
+ *                  description: Success message
+ *              400:
+ *                  description: Error message
  */
 router.put('/game', passport.authenticate('jwt.admin', { session: false } ), (req, res) => {
     gameHandler.addGame(req, res);
 })
 
 /**
- * Delete game by title.
- * @name Delete game by title
- * @route {DELETE} /admin/game
- * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
- * @bodyparam {String} title game title
+ * @swagger
+ * /admin/game:
+ *      delete:
+ *          tags:
+ *              - admin
+ *          description: Remove user by user id
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: title
+ *                description: Game title
+ *                required: true
+ *                type: string
+ *                in: dataForm
+ *          responses:
+ *              200:
+ *                  description: Success message
+ *              400:
+ *                  description: Error message
  */
 router.delete('/game', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     gameHandler.removeGameByTitle(req, res);
 })
 
 /**
- * Get game types.
- * @name Get game types
- * @route {GET} /admin/gametype
- * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
+ * @swagger
+ * /admin/gametype:
+ *      get:
+ *          tags:
+ *              - admin
+ *          description: Get 
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: limit
+ *                description: Limit
+ *                required: false
+ *                default: 10
+ *                type: string
+ *                in: query
+ *              - name: offset
+ *                description: Offset
+ *                required: false
+ *                default: 0
+ *                type: string
+ *                in: query
+ *          responses:
+ *              200:
+ *                  description: An array of game types
+ *              400:
+ *                  description: Error message
  */
 router.get('/gametype', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     gameHandler.getGameTypes(req, res)
 })
+
 /**
- * Add game type.
- * @name Add game type
- * @route {POST} /admin/gametype
- * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
- * @bodyparam {String} type gametype
+ * @swagger
+ * /admin/gametype:
+ *      post:
+ *          tags:
+ *              - admin
+ *          description: Add game type
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: type
+ *                description: Game type
+ *                required: true
+ *                type: string
+ *                in: formData
+ *          responses:
+ *              200:
+ *                  description: Success message
+ *              400:
+ *                  description: Error message
  */
 router.post('/gametype', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     gameHandler.addGameType(req, res)
 })
+
 /**
- * Set account balance.
- * @name Add Set account balance
- * @route {PUT} /admin/account/setbalance
- * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
- * @bodyparam {String} newbalance new account balance
- * @bodyparam {String} userid userid
+ * @swagger
+ * /admin/account/setbalance:
+ *      put:
+ *          tags:
+ *              - admin
+ *          description: Set account balance
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: newbalance
+ *                description: New account balance
+ *                required: true
+ *                type: string
+ *                in: formData
+ *              - name: userid
+ *                description: User id
+ *                required: true
+ *                type: string
+ *                in: formData
+ *          responses:
+ *              200:
+ *                  description: Success message
+ *              400:
+ *                  description: Error message
  */
 router.put('/account/setbalance', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     accountHandler.setBalance(req, res);
 })
+
 /**
- * Add game to account.
- * @name Add game to account
- * @route {PUT} /admin/account/game
- * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
- * @bodyparam {String} accountid
- * @bodyparam {String} gameid
+ * @swagger
+ * /admin/account/game:
+ *      put:
+ *          tags:
+ *              - admin
+ *          description: Add game to account 
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: gameid
+ *                description: Game id
+ *                required: true
+ *                type: string
+ *                in: formData
+ *              - name: userid
+ *                description: User id
+ *                required: true
+ *                type: string
+ *                in: formData
+ *          responses:
+ *              200:
+ *                  description: Success message
+ *              400:
+ *                  description: Error message
  */
 router.put('/account/game', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     accountHandler.addGameToAccount(req, res)
 })
+
 /**
- * Remove game from account.
- * @name Remove game from account
- * @route {DELETE} /admin/account/game
- * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
- * @bodyparam {String} accountid
- * @bodyparam {String} gameid
+ * @swagger
+ * /admin/account/game:
+ *      delete:
+ *          tags:
+ *              - admin
+ *          description: Remove game from account
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: gameid
+ *                description: Game id
+ *                required: true
+ *                type: string
+ *                in: dataForm
+ *              - name: accountid
+ *                description: Account id
+ *                required: true
+ *                type: string
+ *                in: dataForm
+ *          responses:
+ *              200:
+ *                  description: Success message
+ *              400:
+ *                  description: Error message
  */
 router.delete('/account/game', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     accountHandler.removeGameFromAccount(req, res)
 })
+
 /**
- * Set account score.
- * @name Set account score in game
- * @route {PUT} /admin/account/leaderboard
- * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
- * @bodyparam {String} score new score
- * @bodyparam {String} gameid
- * @bodyparam {String} accountId
+ * @swagger
+ * /admin/account/leaderboard:
+ *      put:
+ *          tags:
+ *              - admin
+ *          description: Set account balance
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: newscore
+ *                description: New account balance
+ *                required: true
+ *                type: string
+ *                in: formData
+ *              - name: accountid
+ *                description: Account id
+ *                required: true
+ *                type: string
+ *                in: formData
+ *              - name: gameid
+ *                description: Game id
+ *                required: true
+ *                type: string
+ *                in: formData
+ *          responses:
+ *              200:
+ *                  description: Success message
+ *              400:
+ *                  description: Error message
  */
 router.put('/account/leaderboard', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     accountHandler.setLeaderboard(req, res)
 })
 /**
- * Give admin rights to user.
- * @name Give admin rights to user
- * @route {PUT} /admin/makeadmin
- * @authentication This route requires auth with admin rights. If authentication fails it will return a 401 error.
- * @bodyparam {String} userid
+ * @swagger
+ * /admin/makeadmin:
+ *      put:
+ *          tags:
+ *              - admin
+ *          description: Give admin rights to user
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: id
+ *                description: User id
+ *                required: true
+ *                type: string
+ *                in: formData
+ *          responses:
+ *              200:
+ *                  description: Success message
+ *              400:
+ *                  description: Error message
  */
 router.put('/makeadmin', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     userHandler.makeAdmin(req, res)

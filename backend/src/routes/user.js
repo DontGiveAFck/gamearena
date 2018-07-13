@@ -9,60 +9,201 @@ const userHandler = new User();
 const accountHandler = new Account();
 
 /**
- * Get all game.
- * @name Get all game
- * @route {GET} /user/game
- * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
- * @queryparam {String} title if parameter exist return only one game
+ * @swagger
+ * /user/game:
+ *      get:
+ *          tags:
+ *              - user
+ *          description: Get all games
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: titie
+ *                description: title of a game
+ *                required: false
+ *                type: string
+ *                in: query
+ *              - name: limit
+ *                description: Limit
+ *                required: false
+ *                default: 10
+ *                type: number
+ *                in: query
+ *              - name: offset
+ *                description: Offset
+ *                required: false
+ *                default: 0
+ *                type: number
+ *                in: query
+ *          responses:
+ *              200:
+ *                  description: An array of games
+ *              400:
+ *                  description: Error message
  */
 router.get('/game', passport.authenticate('jwt.user', { session: false }), (req, res) => {
     req.query.title == undefined ?
         gameHandler.getGames(req, res) :
         gameHandler.getGameByTitle(req, res);
 });
+
 /**
- * Get game on current account.
- * @name Get game on current account
- * @route {GET} /user/account/game
- * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
+ * @swagger
+ * /user/account/game:
+ *      get:
+ *          tags:
+ *              - user
+ *          description: Get games on current account
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: limit
+ *                description: Limit
+ *                required: false
+ *                default: 10
+ *                type: string
+ *                in: query
+ *              - name: offset
+ *                description: Offset
+ *                required: false
+ *                default: 0
+ *                type: string
+ *                in: query
+ *          responses:
+ *              200:
+ *                  description: An array of games
+ *              400:
+ *                  description: Error message
  */
 router.get('/account/game', passport.authenticate('jwt.user', { session: false }), (req, res) => {
     accountHandler.getAccountGames(req, res)
 })
 /**
- * Get full leaderboard list.
- * @name Get game on current account
- * @route {GET} /user/leaderboard/all
- * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
+ * @swagger
+ * /user/leaderboard/all:
+ *      get:
+ *          tags:
+ *              - user
+ *          description: Get all games
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: limit
+ *                description: Limit
+ *                required: false
+ *                default: 10
+ *                type: string
+ *                in: query
+ *              - name: offset
+ *                description: Offset
+ *                required: false
+ *                default: 0
+ *                type: string
+ *                in: query
+ *          responses:
+ *              200:
+ *                  description: An array of leaderoboard
+ *              400:
+ *                  description: Error message
  */
 router.get('/leaderboard/all', passport.authenticate('jwt.user', { session: false }), (req, res) => {
     accountHandler.getLeaderboard(req, res)
 })
+
 /**
- * Get leaderboard of one game.
- * @name Get leaderboard of one game
- * @route {GET} /user/leaderboard/game
- * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
- * @queryparam {String} gameid
+ * @swagger
+ * /user/leaderboard/game:
+ *      get:
+ *          tags:
+ *              - user
+ *          description: Get leaderboard by game
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: limit
+ *                description: Limit
+ *                required: false
+ *                default: 10
+ *                type: string
+ *                in: query
+ *              - name: offset
+ *                description: Offset
+ *                required: false
+ *                default: 0
+ *                type: string
+ *                in: query
+ *              - name: gameid
+ *                description: Game id
+ *                required: true
+ *                type: string
+ *                in: query
+ *          responses:
+ *              200:
+ *                  description: An array of leaderoboard
+ *              400:
+ *                  description: Error message
  */
 router.get('/leaderboard/game', passport.authenticate('jwt.user', { session: false}), (req, res) => {
         accountHandler.getLeaderboardByGameId(req, res)
 })
+
 /**
- * Get account scores in all game.
- * @name Get account scores in all game
- * @route {GET} /user/leaderboard/account
- * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
+ * @swagger
+ * /user/leaderboard/account:
+ *      get:
+ *          tags:
+ *              - user
+ *          description: Get leaderboard by game
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: limit
+ *                description: Limit
+ *                required: false
+ *                default: 10
+ *                type: string
+ *                in: query
+ *              - name: offset
+ *                description: Offset
+ *                required: false
+ *                default: 0
+ *                type: string
+ *                in: query
+ *              - name: gameid
+ *                description: Game id
+ *                required: true
+ *                type: string
+ *                in: query
+ *          responses:
+ *              200:
+ *                  description: An array of leaderoboard
+ *              400:
+ *                  description: Error message
  */
 router.get('/leaderboard/account', passport.authenticate('jwt.user', { session: false}), (req, res) => {
     accountHandler.getAccountLeaderboard(req, res)
 })
+
 /**
- * Upload avatar.
- * @name Upload user avatar
- * @route {POST} /user/avatar/add
- * @authentication This route requires auth with user rights. If authentication fails it will return a 401 error.
- * @queryparam {File} avatar
+ * @swagger
+ * /user/avatar/add:
+ *      post:
+ *          tags:
+ *              - user
+ *          description: Add avatar to account
+ *          produces:
+ *              - application/json
+ *          parameters:
+ *              - name: avatar
+ *                description: User avatar
+ *                required: true
+ *                type: file
+ *                in: formData
+ *          responses:
+ *              200:
+ *                  description: Success message
+ *              400:
+ *                  description: Error message
  */
 router.post('/avatar/add', passport.authenticate('jwt.user', { session: false}), (req, res) => {
     userHandler.addAvatar(req, res)

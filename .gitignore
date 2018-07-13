@@ -6,6 +6,8 @@
 logs
 *.log
 npm-debug.log*
+/backend/.eslintrc
+/frontend/.tern-config
 
 # Environment variables
 /backend/.env

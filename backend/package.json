@@ -30,7 +30,9 @@
     "request": "^2.87.0",
     "sequelize": "^4.37.10",
     "sequelize-cli": "^4.0.0",
-    "set-cookie-parser": "^2.2.0"
+    "set-cookie-parser": "^2.2.0",
+    "swagger-jsdoc": "^1.9.7",
+    "swagger-ui-express": "^3.0.10"
   },
   "devDependencies": {
     "eslint-config-standard": "^11.0.0",
