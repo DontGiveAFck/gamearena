@@ -21,5 +21,4 @@ class LoginPage extends React.Component {
     }
 }
 
-// first - data from store to component
 export default connect(null, { login })(LoginPage)

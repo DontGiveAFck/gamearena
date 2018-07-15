@@ -7,7 +7,7 @@ import { Button } from 'semantic-ui-react'
 const LoggedIn = (props) => {
     return (
         <div>
-            <button onClick={props.logout}>Logout</button>
+            <Button onClick={props.logout}>Logout</Button>
         </div>
     )
 }

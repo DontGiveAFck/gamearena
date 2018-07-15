@@ -70,7 +70,7 @@ router.delete('/user', passport.authenticate('jwt.admin', { session: false }), (
 /**
  * @swagger
  * /admin/game:
- *      put:
+ *      post:
  *          tags:
  *              - admin
  *          description: Remove user by user id
@@ -98,7 +98,7 @@ router.delete('/user', passport.authenticate('jwt.admin', { session: false }), (
  *              400:
  *                  description: Error message
  */
-router.put('/game', passport.authenticate('jwt.admin', { session: false } ), (req, res) => {
+router.post('/game', passport.authenticate('jwt.admin', { session: false } ), (req, res) => {
     gameHandler.addGame(req, res);
 })
 
@@ -217,7 +217,7 @@ router.put('/account/setbalance', passport.authenticate('jwt.admin', { session: 
 /**
  * @swagger
  * /admin/account/game:
- *      put:
+ *      post:
  *          tags:
  *              - admin
  *          description: Add game to account 
@@ -240,7 +240,7 @@ router.put('/account/setbalance', passport.authenticate('jwt.admin', { session: 
  *              400:
  *                  description: Error message
  */
-router.put('/account/game', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
+router.post('/account/game', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
     accountHandler.addGameToAccount(req, res)
 })
 

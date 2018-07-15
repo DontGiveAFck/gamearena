@@ -1,6 +1,9 @@
 import axios from 'axios'
 
 export default class RestService {
+    findAll(params, endpoint) {
+        return axios.get(endpoint, params).then(res => res.data)
+    }
 
     create(data, endpoint) {
         return axios.post(endpoint, data).then(res => res.data)

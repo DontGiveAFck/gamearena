@@ -22,8 +22,8 @@ class ProfilePage extends React.Component {
 				{admin && (<div><Message positive>
                           <Message.Header>Welcome, admin</Message.Header>
                           <p>You can do smth cool in admin panel</p>
+                          <Link to='/admin'><Button primary>Admin panel</Button></Link>
                     	  </Message>
-                <Link to='/admin'><Button primary>Admin panel</Button></Link>
                 </div>)}
                 <DropForm submit={this.submit}/>
         	</div>

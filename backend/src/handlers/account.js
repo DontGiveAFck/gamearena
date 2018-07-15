@@ -5,6 +5,14 @@ const successObject = {
     "result": "successful"
 }
 
+const errors = {
+    addGameError: {
+        errors: {
+            result: "User already has this game or unfound user/game"
+        }
+    }
+}
+
 module.exports = class Account {
     constructor() {
         db.account.sync( {force: false} )
@@ -31,8 +39,8 @@ module.exports = class Account {
 
     async getAccounts(req, res) {
         try {
-            const offset = req.query.offset || 0
-            const limit = parseInt(req.query.limit) || 10;
+            const offset = parseInt(req.query.offset) || 0
+            const limit = parseInt(req.query.limit) || 10
             const users = await db.account.findAll({
                 offset: offset,
                 limit: limit
@@ -57,14 +65,14 @@ module.exports = class Account {
             await account.addLeaderboard(leaderboard)
             res.status(200).json(successObject)
         } catch (err) {
-            res.status(400).json(err)
+            res.status(400).json(errors.addGameError)
         }
     }
 
     async getAccountGames(req, res) {
         try {
-            const limit = req.query.limit || 10
-            const offset = req.query.offset || 0
+            const offset = parseInt(req.query.offset) || 0
+            const limit = parseInt(req.query.limit) || 10
             const token = req.cookies.token
             const decoded = jwt.decode(token, {complete: true})
             const userId = decoded.payload.id
@@ -110,8 +118,8 @@ module.exports = class Account {
     }
 
     async getLeaderboard(req, res) {
-        const offset = req.query.offset || 0
-        const limit = req.query.limit || 10
+        const offset = parseInt(req.query.offset) || 0
+        const limit = parseInt(req.query.limit) || 10
         try {
             const scores = await db.leaderboard.findAll({
                 order: [['score', 'DESC']],
@@ -125,8 +133,8 @@ module.exports = class Account {
     }
 
     async getLeaderboardByGameId(req, res) {
-        const offset = req.query.offset || 0
-        const limit = req.query.limit || 10
+        const offset = parseInt(req.query.offset) || 0
+        const limit = parseInt(req.query.limit) || 10
         const gameId = req.query.gameid
         try {
             const scores = await db.leaderboard.findAll({
@@ -151,8 +159,8 @@ module.exports = class Account {
             const token = req.cookies.token
             const decoded = jwt.decode(token, {complete: true})
             const userId = decoded.payload.id
-            const offset = req.query.offset || 0
-            const limit = req.query.limit || 10
+            const offset = parseInt(req.query.offset) || 0
+            const limit = parseInt(req.query.limit) || 10
 
             const account = await db.account.findOne({
                 limit: limit,

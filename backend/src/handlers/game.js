@@ -5,6 +5,24 @@ const successObject = {
     "result": "successful"
 }
 
+const errors = {
+    incorrectCreds: {
+        errors: {
+            result: "Incorrect credentials"
+        }
+    },
+    addGame: {
+        errors: {
+            result: "Title must be unique / no such game type"
+        }
+    },
+    addGameType: {
+        errors: {
+            result: 'Gametype must be unique'
+        }
+    }
+}
+
 module.exports = class Game {
     constructor() {
         db.game.sync({force: false});
@@ -22,7 +40,7 @@ module.exports = class Game {
             const user = await game.save();
             res.status(200).json(successObject);
         } catch (err) {
-            res.status(400).json(err);
+            res.status(400).json(errors.addGame);
         }
     }
 
@@ -56,8 +74,8 @@ module.exports = class Game {
 
     async getGames(req, res) {
         try {
-            const offset = req.query.offset || 0
-            const limit = req.query.limit || 10
+            const offset = parseInt(req.query.offset) || 0
+            const limit = parseInt(req.query.limit) || 10
             const games = await db.game.findAll({
                 offset: offset,
                 limit: limit
@@ -77,19 +95,27 @@ module.exports = class Game {
             await buildGametype.save();
             res.status(200).json(successObject);
         } catch (err) {
-            res.status(400).json(err);
+            res.status(400).json(errors.addGameType);
         }
     }
 
     async getGameTypes(req, res) {
         try {
-            const offset = req.query.offset || 0
-            const limit = req.query.limit || 10
+
+            const offset = parseInt(req.query.offset) || 0
+            const limit = parseInt(req.query.limit) || 10
+            const count = await db.gametype.count()
             const types = await db.gametype.findAll({
+                attributes: ['type'],
                 offset: offset,
                 limit: limit
             });
-            res.status(200).json(types);
+
+            const result = {
+                count: count,
+                types: types
+            }
+            res.status(200).json(result);
         } catch(err) {
             res.status(400).json(err);
             console.log(err);

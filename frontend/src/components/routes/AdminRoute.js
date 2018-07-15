@@ -1,17 +1,17 @@
 import React from 'react'
-import {Route, Redirect} from 'react-router-dom'
-import {connect} from 'react-redux'
+import { Route, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 import jwtDecode from 'jwt-decode'
 
 
 const adminCheck = (token) => {
-	console.log(jwtDecode(token).admin)
+	console.log('isAdmin: ', jwtDecode(token).admin)
 	return !!jwtDecode(token).admin
-} 
+}
 
-const AdminRoute = ({ token, component: Component, ...rest}) => {
+const AdminRoute = ({ token, component: Component, ...rest }) => {
     return (
-        <Route {...rest} render={props => !adminCheck(token) ? <Component {...props}/> : <Redirect to='/admin' />} />
+        <Route {...rest} render={props => adminCheck(token) ? <Component {...props}/> : <Redirect to='/' />} />
     )
 }
 

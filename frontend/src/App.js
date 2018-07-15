@@ -7,7 +7,7 @@ import SignupPage from './components/pages/SignupPage'
 import AdminPage from './components/pages/AdminPage'
 import UserRoute from './components/routes/UserRoute'
 import GuestRoute from './components/routes/GuestRoute'
-import AdminRoute from './components/routes/GuestRoute'
+import AdminRoute from './components/routes/AdminRoute'
 
 const App = ({ location }) => {
     return (

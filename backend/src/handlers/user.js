@@ -1,4 +1,3 @@
-
 const db = require('../db/database')
 const bcrypt = require('bcrypt');
 const errors = require('../errors');
@@ -9,6 +8,14 @@ const mainDir = process.cwd()
 
 const successObject = {
     "result": "successful"
+}
+
+const error = {
+    incorrectCreds: {
+        errors: {
+            result: "Incorrect credentials"
+        }
+    }
 }
 
 module.exports = class User {
@@ -71,8 +78,8 @@ module.exports = class User {
     }
 
     async getUsers(req, res) {
-        const limit = req.query.limit || 10
-        const offset = req.query.offset || 0
+        const offset = parseInt(req.query.offset) || 0
+        const limit = parseInt(req.query.limit) || 10
         try {
             const users = await db.user.findAll({
                 offset: offset,
@@ -118,18 +125,10 @@ module.exports = class User {
                 res.cookie('token', token)
                 res.status(200).json({token: token})
             } else {
-                res.status(400).json({
-                    errors: {
-                        result: "Incorrect credentials"
-                    }
-                })
+                res.status(400).json(error.incorrectCreds)
             }
         } catch (err) {
-            res.status(400).json({
-                errors: {
-                    result: "Incorrect credentials"
-                }
-            });
+            res.status(400).json(error.incorrectCreds);
         }
     }
 
