@@ -1,5 +1,5 @@
 import React from 'react'
-import { getGames } from '../../action-creators/admin-action-creators'
+import { getGames } from '../../action-creators/user-action-creators'
 import { Table, TableHeader, TableBody, TableHeaderCell, TableCell, TableRow, TableFooter, Menu } from 'semantic-ui-react'
 
 export default class GamesList extends React.Component {

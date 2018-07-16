@@ -23,7 +23,7 @@ export default class DropForm extends Component {
                    			 <p>Drop your avatar here (jpeg or png)</p>
                			 </Dropzone>
                 	 </Form.Field>
-                	 <Button primary>Send avatar</Button>
+                	 <Button positive>Send avatar</Button>
 				</Form>
 			</div>
 		)

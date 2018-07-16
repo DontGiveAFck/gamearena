@@ -6,7 +6,6 @@ import AddGameToAccountForm from '../forms/AddGameToAccountForm'
 import AddGameTypeForm from '../forms/AddGameTypeForm'
 import TypesList from '../lists/TypesList'
 import UsersList from '../lists/UsersList'
-import GamesList from '../lists/GamesList'
 import GiveAdminRightsForm from '../forms/GiveAdminRightsForm'
 import RemoveUserForm from '../forms/RemoveUserForm'
 import RemoveGameForm from '../forms/RemoveGameForm'
@@ -22,7 +21,6 @@ class AdminPage extends Component {
 		addGameTypeForm: false,
 		setAccountBalanceForm: false,
 		setLeaderboardForm: false,
-		getGamesList: false,
 		getUsersList: false,
 		getGametypesList: false,
 		giveAdminRightsForm: false,
@@ -60,7 +58,6 @@ class AdminPage extends Component {
 					<Button positive name='setAccountBalance' onClick={this.formButtonClick}>Set account balance</Button>
 					<Button positive name='setLeaderboard' onClick={this.formButtonClick}>Set leaderboard</Button>
                     <br/> <br/>
-					<Button primary name='getGames' onClick={this.getButtonClick}>Get games list</Button>
 					<Button primary name='getUsers' onClick={this.getButtonClick}>Get users list</Button>
 					<Button primary name='getGametypes' onClick={this.getButtonClick}>Get game types list</Button>
                     <br/> <br/>
@@ -74,7 +71,6 @@ class AdminPage extends Component {
 				{this.state.addGameTypeForm && <AddGameTypeForm/>}
 				{this.state.getGametypesList && <TypesList/>}
 				{this.state.getUsersList && <UsersList/>}
-				{this.state.getGamesList && <GamesList/>}
 				{this.state.giveAdminRightsForm && <GiveAdminRightsForm/>}
 				{this.state.removeUserForm && <RemoveUserForm/>}
 				{this.state.removeGameForm && <RemoveGameForm/>}

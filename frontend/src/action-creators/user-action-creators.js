@@ -10,3 +10,6 @@ export const userAvatarUploaded = user => ({
 
 export const uploadAvatar = (data) => dispatch =>
 	api.uploadAvatar(data).then(user => dispatch(userAvatarUploaded(user)))
+
+export const getGames = (data) => api.getGames(data)
+

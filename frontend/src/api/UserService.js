@@ -8,4 +8,9 @@ export default class UserService extends RestService {
 			}
 		}).then(res => res)
 	}
+    getGames(params) {
+        return super.findAll({
+            params: params
+        }, 'user/game')
+    }
 }

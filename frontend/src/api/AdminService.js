@@ -33,11 +33,6 @@ export default class AdminService extends RestService {
             params: params
         }, 'admin/user')
     }
-    getGames(params) {
-        return super.findAll({
-            params: params
-        }, 'user/game')
-    }
     giveAdminRights(data) {
         return super.update({
             id: data.userId
