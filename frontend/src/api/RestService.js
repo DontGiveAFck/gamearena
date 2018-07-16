@@ -13,4 +13,15 @@ export default class RestService {
     	console.log('sended data ',data)
         return axios.post(endpoint, data, options).then(res => res.data)
     }
+
+    update(data, endpoint) {
+        return axios.put(endpoint, data).then(res => res.data)
+    }
+
+    delete(data, endpoint) {
+        console.log('data: ', data)
+        return axios.delete(endpoint, {
+            data: data
+        }).then(res => res.data)
+    }
 }

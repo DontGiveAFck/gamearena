@@ -76,11 +76,18 @@ module.exports = class Game {
         try {
             const offset = parseInt(req.query.offset) || 0
             const limit = parseInt(req.query.limit) || 10
+            const count = await db.game.count()
             const games = await db.game.findAll({
+                attributes: ['id', 'title', 'description', 'status', 'type'],
                 offset: offset,
                 limit: limit
             });
-            res.status(200).json(games);
+            
+            const response = {
+                count: count,
+                games: games
+            }
+            res.status(200).json(response);
         } catch(err) {
             res.status(400).json(err);
         }

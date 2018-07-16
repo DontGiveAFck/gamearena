@@ -1,63 +1,14 @@
 import React, { Component } from 'react';
-import { Segment, Button, Table, TableHeader, TableBody, TableHeaderCell, TableCell, TableRow, } from 'semantic-ui-react'
+import { Segment, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import AddGameForm from '../forms/AddGameForm'
 import AddGameToAccountForm from '../forms/AddGameToAccountForm'
 import AddGameTypeForm from '../forms/AddGameTypeForm'
-import { getGametypes } from "../../action-creators/admin-action-creators"
-
-class List extends Component {
-	state = {
-		render: '',
-		data: [],
-		headers: []
-	}
-
-	getGametypes = (params) => getGametypes(params).then(data => this.setState({data: data})).catch(err => console.log(err))
-
-    componentDidMount() {
-		const params = {
-			limit: 10,
-			offset: 0
-		}
-		this.initState()
-        this.getGametypes(params)
-    }
-
-    initState() {
-    	this.setState({
-			render: this.props.render,
-			headers: this.props.headers
-		})
-    }
-
-    render() {
-		return (
-			<Table>
-				<TableHeader>
-					{ this.state.headers.map((header, id) => <TableHeaderCell key={id}>{header}</TableHeaderCell>) }
-				</TableHeader>
-				<TableBody>
-                    {/*this.state.data.types.map((obj, index) =>
-                        <p  key={index}>{obj.Name}</p>
-                    )*/console.log(this.state.data.types)}
-					<TableRow>
-                        <TableCell>1</TableCell>
-                        <TableCell>2</TableCell>
-                        <TableCell>2</TableCell>
-					</TableRow>
-                    <TableRow>
-                        <TableCell>1</TableCell>
-                        <TableCell>2</TableCell>
-                        <TableCell>2</TableCell>
-                    </TableRow>
-				</TableBody>
-			</Table>
-		)
-	}
-}
-
-
+import TypesList from '../lists/TypesList'
+import UsersList from '../lists/UsersList'
+import GamesList from '../lists/GamesList'
+import GiveAdminRightsForm from '../forms/GiveAdminRightsForm'
+import RemoveUserForm from '../forms/RemoveUserForm'
 
 class AdminPage extends Component {
 
@@ -69,7 +20,11 @@ class AdminPage extends Component {
 		setLeaderboardForm: false,
 		getGamesList: false,
 		getUsersList: false,
-		getGametypesList: false
+		getGametypesList: false,
+		giveAdminRightsForm: false,
+		removeUserForm: false,
+		removeGameForm: false,
+		removeGameFromAccount: false
 	}
 
 	formButtonClick = (e) => {
@@ -89,6 +44,8 @@ class AdminPage extends Component {
         newState[e.target.name + 'List'] = true
         this.setState(newState)
 	}
+	
+	
 
 	render() {
 		return (
@@ -102,18 +59,22 @@ class AdminPage extends Component {
 					<Button positive disabled name='setLeaderboard' onClick={this.formButtonClick}>Set leaderboard</Button>
                     <br/> <br/>
 					<Button primary name='getGames' onClick={this.getButtonClick}>Get games list</Button>
-					<Button primary name='getUsers'>Get users list</Button>
+					<Button primary name='getUsers' onClick={this.getButtonClick}>Get users list</Button>
 					<Button primary name='getGametypes' onClick={this.getButtonClick}>Get game types list</Button>
                     <br/> <br/>
-					<Button negative>Give admin rights to user</Button>
-					<Button negative>Remove user</Button>
-					<Button negative>Remove game</Button>
-					<Button negative>Remove game from account</Button>
+					<Button negative name='giveAdminRights' onClick={this.formButtonClick}>Give admin rights to user</Button>
+					<Button negative name='removeUser' onClick={this.formButtonClick}>Remove user</Button>
+					<Button negative name='removeGame' onClick={this.formButtonClick}>Remove game</Button>
+					<Button negative name='removeGameFromAccount' onClick={this.formButtonClick}>Remove game from account</Button>
 				</Segment>
 				{this.state.addGameForm && <AddGameForm/>}
 				{this.state.addGameToAccountForm && <AddGameToAccountForm/>}
 				{this.state.addGameTypeForm && <AddGameTypeForm/>}
-				{this.state.getGametypesList && <List render='getGametypes' headers={['type']}/>}
+				{this.state.getGametypesList && <TypesList/>}
+				{this.state.getUsersList && <UsersList/>}
+				{this.state.getGamesList && <GamesList/>}
+				{this.state.giveAdminRightsForm && <GiveAdminRightsForm/>}
+				{this.state.removeUserForm && <RemoveUserForm/>}
 			</div>
 		)
 	}

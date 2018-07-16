@@ -78,14 +78,20 @@ module.exports = class User {
     }
 
     async getUsers(req, res) {
-        const offset = parseInt(req.query.offset) || 0
-        const limit = parseInt(req.query.limit) || 10
         try {
+            const offset = parseInt(req.query.offset) || 0
+            const limit = parseInt(req.query.limit) || 10
+            const count = await db.user.count()
             const users = await db.user.findAll({
+                attributes: ['id', 'login', 'email', 'username', 'admin', 'status'],
                 offset: offset,
                 limit: limit
             });
-            res.status(200).json(users);
+            const response = {
+                count: count,
+                users: users
+            }
+            res.status(200).json(response);
         } catch (err) {
             res.status(400).json(err);
             console.log(err);

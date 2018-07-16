@@ -27,4 +27,26 @@ export default class AdminService extends RestService {
             params: params
         }, 'admin/gametype')
     }
+
+    getUsers(params) {
+        return super.findAll({
+            params: params
+        }, 'admin/user')
+    }
+    getGames(params) {
+        return super.findAll({
+            params: params
+        }, 'user/game')
+    }
+    giveAdminRights(data) {
+        return super.update({
+            id: data.userId
+        }, 'admin/makeadmin')
+    }
+    removeUser(data) {
+        console.log('USERID: ', data.userId)
+        return super.delete({
+            userid: data.userId
+        }, 'admin/user')
+    }
 }
