@@ -19,7 +19,6 @@ export default class RestService {
     }
 
     delete(data, endpoint) {
-        console.log('data: ', data)
         return axios.delete(endpoint, {
             data: data
         }).then(res => res.data)

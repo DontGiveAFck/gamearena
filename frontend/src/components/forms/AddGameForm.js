@@ -55,7 +55,7 @@ class AddGameForm extends React.Component {
                     data: {
                         title: '',
                         description: '',
-                        type: '',
+                        type: ''
                     }
                 })
                 :
@@ -143,7 +143,7 @@ class AddGameForm extends React.Component {
                     <Button primary>Add</Button>
                 </Form>
             </div>
-        );
+        )
     }
 }
 

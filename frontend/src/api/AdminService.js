@@ -6,20 +6,20 @@ export default class AdminService extends RestService {
             title: data.title,
             description: data.description/*,
             type: data.type*/
-        }, '/admin/game').then(data => data)
+        }, '/admin/game')
     }
 
     addGameToAccount(data) {
         return super.sendForm({
             gameid: data.gameId,
             accountid: data.accountId
-        }, '/admin/account/game').then(data => data)
+        }, '/admin/account/game')
     }
 
     addGameType(data) {
         return super.sendForm({
             type: data.type
-        }, '/admin/gametype').then(data => data)
+        }, '/admin/gametype')
     }
 
     getGametypes(params) {
@@ -44,9 +44,32 @@ export default class AdminService extends RestService {
         }, 'admin/makeadmin')
     }
     removeUser(data) {
-        console.log('USERID: ', data.userId)
         return super.delete({
             userid: data.userId
         }, 'admin/user')
+    }
+    removeGame(data) {
+        return super.delete({
+            gameid: data.gameId
+        }, 'admin/game')
+    }
+    removeGameFromAccount(data) {
+        return super.delete({
+            gameid: data.gameId,
+            accountid: data.accountId
+        }, 'admin/account/game')
+    }
+    setAccountBalance(data) {
+        return super.update({
+            accountid: data.accountId,
+            newbalance: data.newBalance
+        }, 'admin/account/setbalance')
+    }
+    setLeaderboard(data) {
+        return super.update({
+            accountid: data.accountId,
+            gameid: data.gameId,
+            score: data.score
+        }, 'admin/account/leaderboard')
     }
 }

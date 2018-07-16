@@ -9,6 +9,10 @@ import UsersList from '../lists/UsersList'
 import GamesList from '../lists/GamesList'
 import GiveAdminRightsForm from '../forms/GiveAdminRightsForm'
 import RemoveUserForm from '../forms/RemoveUserForm'
+import RemoveGameForm from '../forms/RemoveGameForm'
+import RemoveGameFromAccountForm from '../forms/RemoveGameFromAccountForm'
+import SetAccountBalanceForm from '../forms/SetAccountBalanceForm'
+import SetLeaderboardForm from '../forms/SetLeaderboardForm'
 
 class AdminPage extends Component {
 
@@ -24,7 +28,7 @@ class AdminPage extends Component {
 		giveAdminRightsForm: false,
 		removeUserForm: false,
 		removeGameForm: false,
-		removeGameFromAccount: false
+		removeGameFromAccountForm: false
 	}
 
 	formButtonClick = (e) => {
@@ -44,8 +48,6 @@ class AdminPage extends Component {
         newState[e.target.name + 'List'] = true
         this.setState(newState)
 	}
-	
-	
 
 	render() {
 		return (
@@ -55,8 +57,8 @@ class AdminPage extends Component {
 					<Button positive name='addGame' onClick={this.formButtonClick}>Add game</Button>
 					<Button positive name='addGameToAccount' onClick={this.formButtonClick}>Add game to account</Button>
 					<Button positive name='addGameType' onClick={this.formButtonClick}>Add game type</Button>
-					<Button positive disabled name='setAccountBalance' onClick={this.formButtonClick}>Set account balance</Button>
-					<Button positive disabled name='setLeaderboard' onClick={this.formButtonClick}>Set leaderboard</Button>
+					<Button positive name='setAccountBalance' onClick={this.formButtonClick}>Set account balance</Button>
+					<Button positive name='setLeaderboard' onClick={this.formButtonClick}>Set leaderboard</Button>
                     <br/> <br/>
 					<Button primary name='getGames' onClick={this.getButtonClick}>Get games list</Button>
 					<Button primary name='getUsers' onClick={this.getButtonClick}>Get users list</Button>
@@ -75,6 +77,10 @@ class AdminPage extends Component {
 				{this.state.getGamesList && <GamesList/>}
 				{this.state.giveAdminRightsForm && <GiveAdminRightsForm/>}
 				{this.state.removeUserForm && <RemoveUserForm/>}
+				{this.state.removeGameForm && <RemoveGameForm/>}
+				{this.state.removeGameFromAccountForm && <RemoveGameFromAccountForm/>}
+				{this.state.setAccountBalanceForm && <SetAccountBalanceForm/>}
+				{this.state.setLeaderboardForm && <SetLeaderboardForm/>}
 			</div>
 		)
 	}
