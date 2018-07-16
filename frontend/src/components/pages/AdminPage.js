@@ -13,31 +13,34 @@ class List extends Component {
 		headers: []
 	}
 
-	getGametypes = (params) => getGametypes(params).then(data => this.setState({data: data.types})).catch(err => console.log(err))
+	getGametypes = (params) => getGametypes(params).then(data => this.setState({data: data})).catch(err => console.log(err))
 
     componentDidMount() {
 		const params = {
 			limit: 10,
 			offset: 0
 		}
-		this.setState({
-			render: this.props.render,
-			headers: this.props.headers
-		})
+		this.initState()
         this.getGametypes(params)
     }
 
+    initState() {
+    	this.setState({
+			render: this.props.render,
+			headers: this.props.headers
+		})
+    }
+
     render() {
-		console.log(this.state)
 		return (
 			<Table>
 				<TableHeader>
 					{ this.state.headers.map((header, id) => <TableHeaderCell key={id}>{header}</TableHeaderCell>) }
 				</TableHeader>
 				<TableBody>
-                    {this.state.data.map((obj, index) =>
+                    {/*this.state.data.types.map((obj, index) =>
                         <p  key={index}>{obj.Name}</p>
-                    )}
+                    )*/console.log(this.state.data.types)}
 					<TableRow>
                         <TableCell>1</TableCell>
                         <TableCell>2</TableCell>
@@ -53,6 +56,8 @@ class List extends Component {
 		)
 	}
 }
+
+
 
 class AdminPage extends Component {
 
