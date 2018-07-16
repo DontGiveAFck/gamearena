@@ -10,7 +10,13 @@ const errors = {
         errors: {
             result: "User already has this game or unfound user/game"
         }
+    },
+    invalidInput: {
+        errors: {
+            result: 'Invalid input'
+        }
     }
+
 }
 
 module.exports = class Account {
@@ -23,17 +29,17 @@ module.exports = class Account {
     async setBalance(req, res) {
         try {
             let newBalance = req.body.newbalance
-            let userId = req.body.userid
+            let accountId = req.body.accountid
             await db.account.update({
                 balance: newBalance
             }, {
                 where: {
-                    userId: userId
+                    userId: accountId
                 }
             });
             res.status(200).json(successObject);
         } catch (err) {
-            res.status(400).json(err);
+            res.status(400).json(errors.invalidInput);
         }
     }
 
@@ -111,7 +117,7 @@ module.exports = class Account {
 
             await account.removeLeaderboard(leaderboard)
             await account.removeGame(gameId)
-            res.status(200).json(successObject);
+            res.status(200).json(errors.InvalidInput);
         } catch (err) {
             res.status(400).json(err)
         }
@@ -184,18 +190,19 @@ module.exports = class Account {
             const gameId = req.body.gameid
             const accountId = req.body.accountid
 
-                scores = await db.leaderboard.update({
-                    score: newScore
-                }, {
-                    where: {
-                        gameId: gameId,
-                        accountId: accountId
-                    }
-                })
-                res.status(200).json(successObject)
+            await db.leaderboard.update({
+                score: newScore
+            }, {
+                where: {
+                    gameId: gameId,
+                    accountId: accountId
+                }
+            })
 
+            res.status(200).json(successObject)
             } catch(err) {
-            res.status(400).json(err)
+            console.log(err)
+            res.status(400).json(errors.invalidInput)
         }
     }
 

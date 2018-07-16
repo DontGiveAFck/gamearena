@@ -20,6 +20,11 @@ const errors = {
         errors: {
             result: 'Gametype must be unique'
         }
+    },
+    invalidInput: {
+        errors: {
+            result: 'Invalid input'
+        }
     }
 }
 
@@ -44,18 +49,20 @@ module.exports = class Game {
         }
     }
 
-    async removeGameByTitle(req, res) {
+    async removeGameByGameId(req, res) {
         try {
+            const gameId = req.body.gameid
+
             await db.game.update({
                 status: 'removed'
             }, {
                 where: {
-                    title: req.body.title
+                    id: gameId
                 }
             })
             res.status(200).json(successObject);
         } catch (err) {
-            res.status(400).json(err);
+            res.status(400).json(errors.invalidInput);
         }
     }
 

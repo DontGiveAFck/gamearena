@@ -15,6 +15,11 @@ const error = {
         errors: {
             result: "Incorrect credentials"
         }
+    },
+    invalidInput: {
+        errors: {
+            result: 'Invalid input'
+        }
     }
 }
 
@@ -72,7 +77,7 @@ module.exports = class User {
 
             res.status(200).json(successObject)
         } catch (err) {
-            res.status(400).json(err);
+            res.status(400).json(error.invalidInput);
             console.log(err);
         }
     }
@@ -150,7 +155,7 @@ module.exports = class User {
             })
             res.status(200).json(successObject)
         } catch (err) {
-            res.status(400).json(err);
+            res.status(400).json(error.invalidInput);
         }
     }
 

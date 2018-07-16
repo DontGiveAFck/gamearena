@@ -124,7 +124,7 @@ router.post('/game', passport.authenticate('jwt.admin', { session: false } ), (r
  *                  description: Error message
  */
 router.delete('/game', passport.authenticate('jwt.admin', { session: false }), (req, res) => {
-    gameHandler.removeGameByTitle(req, res);
+    gameHandler.removeGameByGameId(req, res);
 })
 
 /**
