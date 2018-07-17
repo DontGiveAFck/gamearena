@@ -4,8 +4,8 @@ export default class AdminService extends RestService {
     addGame(data) {
         return super.sendForm({
             title: data.title,
-            description: data.description/*,
-            type: data.type*/
+            description: data.description,
+            type: data.type
         }, '/admin/game')
     }
 

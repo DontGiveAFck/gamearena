@@ -4,7 +4,6 @@ import jwtDecode from 'jwt-decode'
 import { Message, Button, Segment } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import DropForm from '../forms/DropForm'
-import { uploadAvatar } from '../../action-creators/user-action-creators'
 import GamesList from '../lists/GamesList'
 import AccountGamesList from '../lists/AccountGamesList'
 import LeaderboardByPlayerList from '../lists/LeaderboardByPlayerList'
@@ -17,9 +16,6 @@ class ProfilePage extends React.Component {
         getLeaderboardByPlayerList: false,
         addAvatarForm: false
     }
-    
-    submit = data =>
-        this.props.uploadAvatar(data).then(console.log('avatar uploaded'))
 
     getButtonClick = (e) => {
         const newState = {}
@@ -53,7 +49,8 @@ class ProfilePage extends React.Component {
                           <Link to='/admin'><Button primary>Admin panel</Button></Link>
                     	  </Message>
                 </div>)}
-
+                <br/>
+                <Link to='/'><Button>Home page</Button></Link>
                 <Segment>
                     <Button primary name='getAllGames' onClick={this.getButtonClick}>Get all games</Button>
                     <Button primary name='getAccountGames' onClick={this.getButtonClick}>Get my games</Button>
@@ -62,7 +59,7 @@ class ProfilePage extends React.Component {
                     <Button positive name='addAvatar' onClick={this.formButtonClick}>Add avatar</Button>
                 </Segment>
                 {this.state.getAllGamesList && <GamesList/>}
-                {this.state.addAvatarForm && <DropForm submit={this.submit}/>}
+                {this.state.addAvatarForm && <DropForm/>}
                 {this.state.getAccountGamesList && <AccountGamesList/>}
                 {this.state.getLeaderboardByPlayerList && <LeaderboardByPlayerList/>}
         	</div>
@@ -74,4 +71,4 @@ const mapStateTopProps = (state) => ({
 	token: state.user.token
 })
 
-export default connect(mapStateTopProps, { uploadAvatar })(ProfilePage)
+export default connect(mapStateTopProps)(ProfilePage)

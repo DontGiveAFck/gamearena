@@ -154,7 +154,8 @@ module.exports = class Account {
         const limit = parseInt(req.query.limit) || 10
         const gameId = req.query.gameid
         try {
-            const scores = await db.leaderboard.findAll({
+            const leaderboards = await db.leaderboard.findAndCountAll({
+                attributes: ['accountId', 'score'],
                 order: [['score', 'DESC']],
                 offset: offset,
                 limit: limit,
@@ -165,7 +166,12 @@ module.exports = class Account {
                     }
                 }
             })
-            res.status(200).json(scores)
+
+            const response = {
+                count: leaderboards.count,
+                leaderboards: leaderboards.rows
+            }
+            res.status(200).json(response)
         } catch (err) {
             res.status(400).json(err)
         }
@@ -186,7 +192,6 @@ module.exports = class Account {
                 }
             })
 
-            console.log('before count')
             const count = await db.leaderboard.count({
                 where: {
                     accountId: account.id

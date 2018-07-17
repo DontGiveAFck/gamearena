@@ -8,6 +8,7 @@ const LoggedIn = (props) => {
     return (
         <div>
             <Button onClick={props.logout}>Logout</Button>
+            <Link to='/profile'><Button>Profile</Button></Link>
         </div>
     )
 }

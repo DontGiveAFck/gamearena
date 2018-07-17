@@ -20,6 +20,9 @@ const error = {
         errors: {
             result: 'Invalid input'
         }
+    },
+    invalidImage: {
+        errors: 'Smth wrong with your image'
     }
 }
 
@@ -181,7 +184,7 @@ module.exports = class User {
             })
             res.status(200).json(successObject)
         } catch (err) {
-            return res.status(402).json(err)
+            return res.status(402).json(error.invalidImage)
 
         }
     }
@@ -202,7 +205,7 @@ module.exports = class User {
             })
             res.status(200).json(successObject)
         } catch (err) {
-            return res.status(400).json(err)
+            return res.status(400).json(error.invalidInput)
         }
     }
 }

@@ -7,7 +7,8 @@ export default class GamesList extends React.Component {
 	state = {	
 		data: {},
         menuItemsCount: 0,
-        leaderboard: 0
+        leaderboard: 0,
+        clearleaderboard: 0
     }
 	
 	getGames = (params) => {
@@ -38,18 +39,17 @@ export default class GamesList extends React.Component {
 
 
     getLeaderboardByGame = (e) => {
-    	console.log('prev state ', this.state.leaderboard)
-    	this.setState({
-    		leaderboard: 0
-    	});
-    	console.log('after leaderboard: 0 ', this.state.leaderboard)
-		this.setState({
+	    this.setState({
 			leaderboard: e.target.name
 		})
-		console.log('after leaderboard: name ', this.state.leaderboard)
+        console.log(this.state.leaderboard)
 
     }
-	
+    closeLeaderboard = () => {
+        this.setState({
+            leaderboard: 0
+        })
+    }
     render() {
         let menuItems = []
         for (let i = 0; i < this.state.menuItemsCount; i++) {
@@ -77,7 +77,7 @@ export default class GamesList extends React.Component {
 								<TableCell>{obj.description}</TableCell>
 								<TableCell>{obj.type}</TableCell>
 								<TableCell>{obj.status}</TableCell>
-								<TableCell><Button onClick={this.getLeaderboardByGame} name={obj.id}>Leaderboard</Button></TableCell>
+								<TableCell><Button disabled={!!this.state.leaderboard} onClick={this.getLeaderboardByGame} name={obj.id}>Leaderboard</Button></TableCell>
 							</TableRow>)
 					  })
                     }
@@ -91,6 +91,7 @@ export default class GamesList extends React.Component {
                 </TableFooter>
 				</Table>
 				<br/> <br/>
+                {!!this.state.leaderboard && <Button negative onClick={this.closeLeaderboard}>Close leaderboard</Button>}
 				{!!this.state.leaderboard && <LeaderboardByGameList gameid={this.state.leaderboard}/>}
 			</div>
 		)

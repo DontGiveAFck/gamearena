@@ -1,4 +1,3 @@
-import { ADMIN_ADDED_GAME } from '../types'
 import AdminService from '../api/AdminService'
 const api = new AdminService()
 

@@ -10,7 +10,7 @@ export default class RestService {
     }
 
     sendForm(data, endpoint, options) {
-    	console.log('sended data ',data)
+    	console.log('sended data ', data)
         return axios.post(endpoint, data, options).then(res => res.data)
     }
 

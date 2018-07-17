@@ -35,11 +35,11 @@ class AddGameForm extends React.Component {
         if (data.description.length > 255 || data.description.length < 1) {
             errors.description = 'Invalid description'
         }
-        /*
-        if (data.type.length > 255 || data.type.length < 1) {
-            errors.type = 'Invalid game type'
+        if (this.state.gameTypeToggle) {
+            if (data.type.length > 255 || data.type.length < 1) {
+                errors.type = 'Invalid game type'
+            }
         }
-        */
         return errors
     }
 

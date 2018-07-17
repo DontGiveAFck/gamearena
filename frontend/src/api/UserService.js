@@ -6,7 +6,7 @@ export default class UserService extends RestService {
 			headers: {
 				'Content-Type': 'muptipart/form-data'
 			}
-		}).then(res => res)
+		})
 	}
     getGames(params) {
         return super.findAll({

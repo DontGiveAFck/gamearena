@@ -36,7 +36,7 @@ export default class GamesList extends React.Component {
             offset: pageNumber * 10,
             gameid: this.props.gameid
         }
-
+        this.getLeaderboardByGame(params)
     }
 
     render() {
@@ -56,7 +56,7 @@ export default class GamesList extends React.Component {
                       (this.state.data.count) &&
 					  this.state.data.leaderboards.map((obj) => {
 							return (<TableRow>
-								<TableCell>{obj.accountid}</TableCell>
+								<TableCell>{obj.accountId}</TableCell>
 								<TableCell>{obj.score}</TableCell>
 							</TableRow>)
 					  })

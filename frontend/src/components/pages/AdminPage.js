@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import { Segment, Button } from 'semantic-ui-react'
-import { connect } from 'react-redux'
 import AddGameForm from '../forms/AddGameForm'
 import AddGameToAccountForm from '../forms/AddGameToAccountForm'
 import AddGameTypeForm from '../forms/AddGameTypeForm'
@@ -13,7 +13,7 @@ import RemoveGameFromAccountForm from '../forms/RemoveGameFromAccountForm'
 import SetAccountBalanceForm from '../forms/SetAccountBalanceForm'
 import SetLeaderboardForm from '../forms/SetLeaderboardForm'
 
-class AdminPage extends Component {
+export default class AdminPage extends Component {
 
 	state = {
 		addGameForm: false,
@@ -51,6 +51,8 @@ class AdminPage extends Component {
 		return (
 			<div>
 				<h1>Admin panel</h1>
+				<Link to='/profile'><Button>Profile</Button></Link>
+                <br/> <br/>
 				<Segment>
 					<Button positive name='addGame' onClick={this.formButtonClick}>Add game</Button>
 					<Button positive name='addGameToAccount' onClick={this.formButtonClick}>Add game to account</Button>
@@ -81,11 +83,3 @@ class AdminPage extends Component {
 		)
 	}
 }
-
-const mapStateToProps = (state) => {
-	return {
-
-	}
-}
-
-export default connect(mapStateToProps)(AdminPage)
