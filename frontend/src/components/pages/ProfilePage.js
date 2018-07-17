@@ -6,13 +6,14 @@ import { Link } from 'react-router-dom'
 import DropForm from '../forms/DropForm'
 import { uploadAvatar } from '../../action-creators/user-action-creators'
 import GamesList from '../lists/GamesList'
+import AccountGamesList from '../lists/AccountGamesList'
+import LeaderboardByPlayerList from '../lists/LeaderboardByPlayerList'
 
 class ProfilePage extends React.Component {
     state = {
         getAllGamesList: false,
-        getMyGamesList: false,
+        getAccountGamesList: false,
         getLeaderboardList: false,
-        getLeaderboardByGameList: false,
         getLeaderboardByPlayerList: false,
         addAvatarForm: false
     }
@@ -26,6 +27,7 @@ class ProfilePage extends React.Component {
             this.state[key] = false
         })
         newState[e.target.name + 'List'] = true
+        console.log(newState)
         this.setState(newState)
     }
 
@@ -54,15 +56,15 @@ class ProfilePage extends React.Component {
 
                 <Segment>
                     <Button primary name='getAllGames' onClick={this.getButtonClick}>Get all games</Button>
-                    <Button primary name='getMyGames' onClick={this.getButtonClick}>Get my games</Button>
-                    <Button primary name='getLeaderboard' onClick={this.getButtonClick}>Get leaderboard</Button>
-                    <Button primary name='getLeaderboardByGame' onClick={this.getButtonClick}>Get leaderboard by game</Button>
-                    <Button primary name='getLeaderboardByPlayer' onClick={this.getButtonClick}>Get leaderboard by player</Button>
+                    <Button primary name='getAccountGames' onClick={this.getButtonClick}>Get my games</Button>
+                    <Button primary name='getLeaderboardByPlayer' onClick={this.getButtonClick}>Get my scores</Button>
                     <br/> <br/>
                     <Button positive name='addAvatar' onClick={this.formButtonClick}>Add avatar</Button>
                 </Segment>
                 {this.state.getAllGamesList && <GamesList/>}
                 {this.state.addAvatarForm && <DropForm submit={this.submit}/>}
+                {this.state.getAccountGamesList && <AccountGamesList/>}
+                {this.state.getLeaderboardByPlayerList && <LeaderboardByPlayerList/>}
         	</div>
         )
     }

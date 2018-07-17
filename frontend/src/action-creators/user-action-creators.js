@@ -12,4 +12,6 @@ export const uploadAvatar = (data) => dispatch =>
 	api.uploadAvatar(data).then(user => dispatch(userAvatarUploaded(user)))
 
 export const getGames = (data) => api.getGames(data)
-
+export const getAccountGames = (data) => api.getAccountGames(data)
+export const getLeaderboardByPlayer = (data) => api.getLeaderboardByPlayer(data)
+export const getLeaderboardByGame = (data) => api.getLeaderboardByGame(data)

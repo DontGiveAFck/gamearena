@@ -82,16 +82,27 @@ module.exports = class Account {
             const token = req.cookies.token
             const decoded = jwt.decode(token, {complete: true})
             const userId = decoded.payload.id
+
             const account = await db.account.findOne({
                 where: {
                     userId: userId
                 }
             })
+            const count = await db.accountgame.count({
+                where: {
+                    accountid: account.id
+                }
+            })
             const games = await account.getGames({
+                attributes: ['id', 'title', 'description', 'type', 'status'],
                 limit: limit,
                 offset: offset
             })
-            res.status(200).json(games)
+            const response = {
+                count: count,
+                games: games
+            }
+            res.status(200).json(response)
         } catch (err) {
             res.status(400).json(err)
         }
@@ -162,6 +173,7 @@ module.exports = class Account {
 
     async getAccountLeaderboard(req, res) {
         try {
+
             const token = req.cookies.token
             const decoded = jwt.decode(token, {complete: true})
             const userId = decoded.payload.id
@@ -169,16 +181,27 @@ module.exports = class Account {
             const limit = parseInt(req.query.limit) || 10
 
             const account = await db.account.findOne({
-                limit: limit,
-                offset: offset,
                 where: {
                     userId: userId
                 }
             })
 
-           // const games = await account.getGames();
-            const leaderboards = await account.getLeaderboards()
-            res.status(200).json(leaderboards)
+            console.log('before count')
+            const count = await db.leaderboard.count({
+                where: {
+                    accountId: account.id
+                }
+            })
+            const leaderboards = await account.getLeaderboards({
+                attributes: ['gameid', 'score'],
+            })
+            
+            const response = {
+                count: count,
+                leaderboards: leaderboards
+            }
+
+            res.status(200).json(response)
         } catch (err) {
             res.status(400).json(err)
         }
@@ -200,7 +223,7 @@ module.exports = class Account {
             })
 
             res.status(200).json(successObject)
-            } catch(err) {
+        } catch(err) {
             console.log(err)
             res.status(400).json(errors.invalidInput)
         }

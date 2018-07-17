@@ -166,13 +166,12 @@ module.exports = class User {
 
         try {
             const avatar = req.files.avatar
-            console.log('avatar ', avatar)
             const token = req.cookies.token
             const decoded = jwt.decode(token, {complete: true})
-            const avatarPath = mainDir + '/pictures/user/avatars/user' + decoded.payload.id + '.jpg'
+            const avatarPath = mainDir + '/pictures/users/avatars/user' + decoded.payload.id + '.jpg'
+            console.log(mainDir)
 
             await avatar.mv(avatarPath)
-
             await db.user.update({
                 avatar: avatarPath
             }, {

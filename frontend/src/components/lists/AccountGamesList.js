@@ -1,17 +1,15 @@
 import React from 'react'
-import { getGames } from '../../action-creators/user-action-creators'
+import { getAccountGames } from '../../action-creators/user-action-creators'
 import { Table, TableHeader, TableBody, TableHeaderCell, TableCell, TableRow, TableFooter, Menu, Button } from 'semantic-ui-react'
-import LeaderboardByGameList from './LeaderboardByGameList'
 
-export default class GamesList extends React.Component {
+export default class AccountGamesList extends React.Component {
 	state = {	
 		data: {},
-        menuItemsCount: 0,
-        leaderboard: 0
+        menuItemsCount: 0
     }
-	
-	getGames = (params) => {
-		return getGames(params).then(data => {
+
+	getAccountGames = (params) => {
+		return getAccountGames(params).then(data => {
             const menuItemsCount = Math.ceil(data.count / params.limit)
 			return this.setState({
 				menuItemsCount: menuItemsCount,
@@ -24,30 +22,17 @@ export default class GamesList extends React.Component {
 			limit: 10,
 			offset: 0
 		}
-        this.getGames(params)
+        this.getAccountGames(params)
     }
 
     handleMenuItemClick = (e, res) => {
         const pageNumber = res.name
+        console.log(pageNumber)
         const params = {
             limit: 10,
             offset: pageNumber * 10
         }
-        this.getGames(params)
-    }
-
-
-    getLeaderboardByGame = (e) => {
-    	console.log('prev state ', this.state.leaderboard)
-    	this.setState({
-    		leaderboard: 0
-    	});
-    	console.log('after leaderboard: 0 ', this.state.leaderboard)
-		this.setState({
-			leaderboard: e.target.name
-		})
-		console.log('after leaderboard: name ', this.state.leaderboard)
-
+        this.getAccountGames(params)
     }
 	
     render() {
@@ -57,15 +42,13 @@ export default class GamesList extends React.Component {
         }
     	console.log(this.state.data)
 		return (
-			<div>
-				<Table>
+			<Table>
 				<TableHeader>
 					<TableHeaderCell>ID</TableHeaderCell>
 					<TableHeaderCell>Title</TableHeaderCell>
 					<TableHeaderCell>Description</TableHeaderCell>
 					<TableHeaderCell>Type</TableHeaderCell>
 					<TableHeaderCell>Status</TableHeaderCell>
-					<TableHeaderCell>Leaderboard</TableHeaderCell>
 				</TableHeader>
 				<TableBody>
                     {
@@ -77,7 +60,6 @@ export default class GamesList extends React.Component {
 								<TableCell>{obj.description}</TableCell>
 								<TableCell>{obj.type}</TableCell>
 								<TableCell>{obj.status}</TableCell>
-								<TableCell><Button onClick={this.getLeaderboardByGame} name={obj.id}>Leaderboard</Button></TableCell>
 							</TableRow>)
 					  })
                     }
@@ -89,10 +71,7 @@ export default class GamesList extends React.Component {
                         </Menu>
                     </TableRow>
                 </TableFooter>
-				</Table>
-				<br/> <br/>
-				{!!this.state.leaderboard && <LeaderboardByGameList gameid={this.state.leaderboard}/>}
-			</div>
+			</Table>
 		)
 	}
 }

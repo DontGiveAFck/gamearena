@@ -9,10 +9,12 @@ export default class DropForm extends Component {
 		console.log('files', this.form.getAll('avatar'))
 	}
 	onSubmit = () => {
+
 		console.log('files ', this.form.get)
 		this.props
             .submit(this.form)
             .catch(err => console.log(err))
+        this.form = new FormData()
 	}
 	render() {
 		return (
