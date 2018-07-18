@@ -23,6 +23,9 @@ const error = {
     },
     invalidImage: {
         errors: 'Smth wrong with your image'
+    },
+    noAvatar: {
+        errors: 'No avatar'
     }
 }
 
@@ -186,6 +189,16 @@ module.exports = class User {
         } catch (err) {
             return res.status(402).json(error.invalidImage)
 
+        }
+    }
+
+    async getAvatar(req, res) {
+        try {
+            const token = req.cookies.token
+            const decodedId = jwt.decode(token, {complete: true}).payload.id
+            res.sendFile(mainDir + '/pictures/users/avatars/user' + decodedId + '.jpg')
+        } catch(err) {
+            res.status(400).json(error.noAvatar)
         }
     }
 

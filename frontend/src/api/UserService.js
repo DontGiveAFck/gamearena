@@ -28,4 +28,11 @@ export default class UserService extends RestService {
             params: params
         }, 'user/leaderboard/game')
     }
+    getAvatar() {
+	    return super.findAll({
+            params: null
+        }, 'user/avatar/get', {
+            responseType: 'arraybuffer'
+        })
+    }
 }

@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 export default class RestService {
-    findAll(params, endpoint) {
-        return axios.get(endpoint, params).then(res => res.data)
+    findAll(params, endpoint, options) {
+        return axios.get(endpoint, params, options).then(res => res.data)
     }
 
     create(data, endpoint) {

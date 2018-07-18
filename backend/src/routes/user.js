@@ -209,4 +209,8 @@ router.post('/avatar/add', passport.authenticate('jwt.user', { session: false}),
     userHandler.addAvatar(req, res)
 })
 
+router.get('/avatar/get', passport.authenticate('jwt.user', { session: false}), (req, res) => {
+    userHandler.getAvatar(req, res)
+})
+
 module.exports = router;

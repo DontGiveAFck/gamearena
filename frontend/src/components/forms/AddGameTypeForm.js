@@ -3,12 +3,12 @@ import {Form, Button, Message} from 'semantic-ui-react'
 import { addGameType } from "../../action-creators/admin-action-creators"
 import InlineError from '../messages/InlineError'
 
-class AddGameToAccountForm extends React.Component {
+export default class AddGameTypeForm extends React.Component {
 
     state = {
         data: {
             // form data
-            type: '',
+            type: ''
         },
         loading: false,
         errors: {},
@@ -41,7 +41,7 @@ class AddGameToAccountForm extends React.Component {
             this.setState({
                 loading: true,
                 data: {
-                    type: '',
+                    type: ''
                 }
             })
 
@@ -85,5 +85,3 @@ class AddGameToAccountForm extends React.Component {
         )
     }
 }
-
-export default AddGameToAccountForm

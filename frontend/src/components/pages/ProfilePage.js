@@ -7,6 +7,7 @@ import DropForm from '../forms/DropForm'
 import GamesList from '../lists/GamesList'
 import AccountGamesList from '../lists/AccountGamesList'
 import LeaderboardByPlayerList from '../lists/LeaderboardByPlayerList'
+import { getAvatar } from '../../action-creators/user-action-creators'
 
 class ProfilePage extends React.Component {
     state = {
@@ -14,7 +15,21 @@ class ProfilePage extends React.Component {
         getAccountGamesList: false,
         getLeaderboardList: false,
         getLeaderboardByPlayerList: false,
-        addAvatarForm: false
+        addAvatarForm: false,
+        avatarExist: false
+    }
+
+    componentDidMount() {
+        getAvatar().then(res => {
+            const base64 = btoa(
+                new Uint8Array(res).reduce(
+                    (data, byte) => data + String.fromCharCode(byte),
+                    '',
+                ),
+            )
+            console.log(res)
+            return this.setState({ avatarExist: 'data:;base64,' + base64 })
+        })
     }
 
     getButtonClick = (e) => {
@@ -51,6 +66,9 @@ class ProfilePage extends React.Component {
                 </div>)}
                 <br/>
                 <Link to='/'><Button>Home page</Button></Link>
+                <div>
+                    { this.state.avatarExist ? <img src={this.state.avatarExist} alt='avatar'/> : 'No avatar' }
+                </div>
                 <Segment>
                     <Button primary name='getAllGames' onClick={this.getButtonClick}>Get all games</Button>
                     <Button primary name='getAccountGames' onClick={this.getButtonClick}>Get my games</Button>
