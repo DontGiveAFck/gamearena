@@ -2,7 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logout } from '../../action-creators/auth-action-creators'
-import { Button } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
+import DropForm from '../forms/DropForm'
+
 
 const LoggedIn = (props) => {
     return (
@@ -26,6 +28,9 @@ const HomePage = (props) => {
     return (
         <div>
             <h1>Home Page</h1>
+            <Form.Field className='field'>
+                <DropForm></DropForm>
+            </Form.Field>
             {props.isAuthenticated ? <LoggedIn logout={props.logout} /> : <LoggedOut />}
         </div>
     )
