@@ -43,6 +43,7 @@ export default class SetAccountBalanceForm extends React.Component {
         this.setState({ errors })
 
         if (Object.keys(errors).length === 0) {
+            this.sendData(this.state.data).catch(err => this.setState({ errors: err.response.data.errors, loading: false }))
             this.setState({
                 loading: true,
                 data: {
@@ -50,8 +51,6 @@ export default class SetAccountBalanceForm extends React.Component {
                     accountId: ''
                 }
             })
-
-            this.sendData(this.state.data).catch(err => this.setState({ errors: err.response.data.errors, loading: false }))
         }
     }
 

@@ -35,7 +35,7 @@ class AddGameForm extends React.Component {
         if (data.description.length > 255 || data.description.length < 1) {
             errors.description = 'Invalid description'
         }
-        if (this.state.gameTypeToggle) {
+        if (this.state.gameTypeToggle && data.type) {
             if (data.type.length > 255 || data.type.length < 1) {
                 errors.type = 'Invalid game type'
             }
@@ -46,9 +46,12 @@ class AddGameForm extends React.Component {
     onSubmit = (e) => {
         e.preventDefault()
         let errors = this.validate(this.state.data)
-        this.setState({ errors })
+        this.setState({ errors, result: '' })
 
         if (Object.keys(errors).length === 0) {
+            this.sendData(this.state.data)
+                .catch(err => this.setState({ errors: err.response.data.errors, loading: false }))
+
             this.state.gameTypeToggle ?
                 this.setState({
                     loading: true,
@@ -66,8 +69,6 @@ class AddGameForm extends React.Component {
                         description: ''
                     }
                 })
-            this.sendData(this.state.data)
-                .catch(err => this.setState({ errors: err.response.data.errors, loading: false }))
         }
     }
 

@@ -47,20 +47,20 @@ class SignupForm extends React.Component {
     onSubmit = () => {
         let errors = this.validate(this.state.data)
         this.setState({ errors })
-
-        if (Object.keys(errors).length === 0) {
-            this.setState({
-             loading: true,
-             data: {
-                login: '',
-                username: '',
-                email: '',
-                password: ''
-            }
-        })
             this.props
                 .submit(this.state.data)
                 .catch(err => this.setState({ errors: err.response.data.errors, loading: false }))
+
+        if (Object.keys(errors).length === 0) {
+            this.setState({
+                loading: true,
+                data: {
+                    login: '',
+                    username: '',
+                    email: '',
+                    password: ''
+                }
+            })
         }
     }
 
@@ -75,7 +75,6 @@ class SignupForm extends React.Component {
                         <p>{errors.message}</p>
                     </Message>
                 )}
-               
                 <Form.Field className='field' error={!!errors.email}>
                     <label htmlFor='email'>Email</label>
                     <input

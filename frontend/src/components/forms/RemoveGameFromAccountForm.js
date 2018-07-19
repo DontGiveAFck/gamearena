@@ -40,9 +40,10 @@ export default class RemoveGameFromAccountForm extends React.Component {
     onSubmit = (e) => {
         e.preventDefault()
         let errors = this.validate(this.state.data)
-        this.setState({ errors })
+        this.setState({ errors, result: '' })
 
         if (Object.keys(errors).length === 0) {
+            this.sendData(this.state.data).catch(err => this.setState({ errors: err.response.data.errors, loading: false }))
             this.setState({
                 loading: true,
                 data: {
@@ -50,8 +51,6 @@ export default class RemoveGameFromAccountForm extends React.Component {
                     accountId: ''
                 }
             })
-
-            this.sendData(this.state.data).catch(err => this.setState({ errors: err.response.data.errors, loading: false }))
         }
     }
 

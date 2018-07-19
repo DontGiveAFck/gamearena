@@ -2,11 +2,19 @@ import RestService from './RestService'
 
 export default class AdminService extends RestService {
     addGame(data) {
-        return super.sendForm({
-            title: data.title,
-            description: data.description,
-            type: data.type
-        }, '/admin/game')
+        if (data.type == '') {
+            return super.sendForm({
+                title: data.title,
+                description: data.description
+            }, '/admin/game')
+        } else {
+            return super.sendForm({
+                title: data.title,
+                description: data.description,
+                type: data.type
+            }, '/admin/game')
+        }
+
     }
 
     addGameToAccount(data) {
